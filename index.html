@@ -750,40 +750,46 @@
         function triggerHeartsBlast() {
             const overlay = document.getElementById("heart-overlay");
             overlay.style.display = "block";
+            overlay.style.opacity = "1";
             overlay.innerHTML = "";
 
             const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
-            const totalHearts = 65; // Chhote-bade hearts ki quantity
 
-            for (let i = 0; i < totalHearts; i++) {
+            // 1. Every 40ms par continuously naye hearts create honge
+            const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
-                // Random position, sizes and animations
                 const randomLeft = Math.random() * 95; // % width
-                const randomSize = Math.floor(Math.random() * 42) + 20; // 20px se 62px tak
-                const randomDuration = (Math.random() * 0.9 + 1.1).toFixed(2); // 1.1s se 2s tak
-                const randomDelay = (Math.random() * 0.4).toFixed(2); // Thoda stagger effect
+                const randomSize = Math.floor(Math.random() * 35) + 20; // 20px se 55px tak
+                const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2); // Speed fast float ke liye
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
                 heart.style.left = randomLeft + "vw";
                 heart.style.setProperty('--size', randomSize + "px");
                 heart.style.setProperty('--duration', randomDuration + "s");
                 heart.style.setProperty('--rotation', randomRotation);
-                heart.style.animationDelay = randomDelay + "s";
 
                 overlay.appendChild(heart);
-            }
 
-            // 1.8 Seconds baad heart overlay ko hide karke main content dikhao
+                // Animated heart ko screen se remove kar do performance ke liye
+                setTimeout(() => {
+                    heart.remove();
+                }, parseFloat(randomDuration) * 1000);
+            }, 40);
+
+            // 2. Exact 2 Seconds tak naye hearts aayenge, phir interval stop hoga
             setTimeout(() => {
-                overlay.style.transition = "opacity 0.5s ease";
+                clearInterval(heartInterval);
+                overlay.style.transition = "opacity 0.6s ease";
                 overlay.style.opacity = "0";
+
+                // Overlay complete hide ho jayega
                 setTimeout(() => {
                     overlay.style.display = "none";
-                }, 500);
-            }, 2500);
+                }, 600);
+            }, 2000);
         }
 
         function checkEmoji() {
