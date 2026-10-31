@@ -12,8 +12,7 @@
     <meta property="og:description" content="A special surprise crafted with love">
     <meta property="og:type" content="website">
 
-    <!-- Canvas Confetti Library & Google Fonts -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -208,6 +207,42 @@
         .fade-out {
             opacity: 0;
             visibility: hidden;
+        }
+
+        /* --- Fullscreen Heart Blast Overlay --- */
+        #heart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffe4e1;
+            z-index: 9999999;
+            display: none;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .blast-heart {
+            position: absolute;
+            bottom: -50px;
+            animation: blastFlyUp var(--duration) ease-out forwards;
+            font-size: var(--size);
+            user-select: none;
+        }
+
+        @keyframes blastFlyUp {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-115vh) scale(1.4) rotate(var(--rotation));
+                opacity: 0.9;
+            }
         }
 
         /* --- Main Webpage Styling --- */
@@ -589,6 +624,9 @@
         </div>
     </div>
 
+    <!-- Fullscreen Heart Blast Overlay (Unlock par 1.5-2 Sec ke liye aayega) -->
+    <div id="heart-overlay"></div>
+
     <!-- Main Romantic Content Box -->
     <div class="content-box">
         <h1>For Khushu <span class="heart-icon">❤️</span> </h1>
@@ -689,7 +727,6 @@
             emojiInput.focus();
         });
 
-        
         function startSuspenseAudio() {
             if (suspenseAudio.paused) {
                 suspenseAudio.play().then(() => {
@@ -704,12 +741,50 @@
             }
         }
 
-
         emojiInput.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 checkEmoji();
             }
         });
+
+        function triggerHeartsBlast() {
+            const overlay = document.getElementById("heart-overlay");
+            overlay.style.display = "block";
+            overlay.innerHTML = "";
+
+            const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
+            const totalHearts = 65; // Chhote-bade hearts ki quantity
+
+            for (let i = 0; i < totalHearts; i++) {
+                const heart = document.createElement("div");
+                heart.className = "blast-heart";
+                heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+                
+                // Random position, sizes and animations
+                const randomLeft = Math.random() * 95; // % width
+                const randomSize = Math.floor(Math.random() * 42) + 20; // 20px se 62px tak
+                const randomDuration = (Math.random() * 0.9 + 1.1).toFixed(2); // 1.1s se 2s tak
+                const randomDelay = (Math.random() * 0.4).toFixed(2); // Thoda stagger effect
+                const randomRotation = (Math.random() * 60 - 30) + "deg";
+
+                heart.style.left = randomLeft + "vw";
+                heart.style.setProperty('--size', randomSize + "px");
+                heart.style.setProperty('--duration', randomDuration + "s");
+                heart.style.setProperty('--rotation', randomRotation);
+                heart.style.animationDelay = randomDelay + "s";
+
+                overlay.appendChild(heart);
+            }
+
+            // 1.8 Seconds baad heart overlay ko hide karke main content dikhao
+            setTimeout(() => {
+                overlay.style.transition = "opacity 0.5s ease";
+                overlay.style.opacity = "0";
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 500);
+            }, 1800);
+        }
 
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
@@ -719,29 +794,11 @@
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 2. Hide lock screen inputs
-                document.getElementById("lock-title").classList.add("hide-content");
-                audioBtn.classList.add("hide-content");
-                document.getElementById("lock-subtext").classList.add("hide-content");
-                document.getElementById("lock-hint").classList.add("hide-content");
-                document.getElementById("lock-inputs").classList.add("hide-content");
+                // 2. Hide lock screen
+                lockScreen.classList.add("fade-out");
 
-                // 3. Center success message
-                lockMsg.className = "lock-message success";
-                lockMsg.innerText = "You got it! 🥳🎉";
-
-                // 4. Trigger Confetti
-                confetti({
-                    particleCount: 120,
-                    spread: 80,
-                    origin: { y: 0.6 },
-                    colors: ['#ff2a5f', '#ff758f', '#38bdf8', '#ffffff']
-                });
-
-                // 5. Open Main Page after delay
-                setTimeout(() => {
-                    lockScreen.classList.add("fade-out");
-                }, 1200);
+                // 3. Trigger 1-2 sec Fullscreen Hearts Burst
+                triggerHeartsBlast();
 
             } else {
                 lockMsg.className = "lock-message error";
@@ -781,12 +838,6 @@
                         vinyl.classList.add('spinning');
                         musicButton.innerText = "Pause Music ⏸";
                         isPlaying = true;
-                        confetti({
-                            particleCount: 80,
-                            spread: 70,
-                            origin: { y: 0.6 },
-                            colors: ['#ff2a5f', '#ff758f', '#ffb3c1']
-                        });
                     }).catch(e => console.log("Audio play error:", e));
                 } else {
                     audio.pause();
@@ -851,10 +902,10 @@
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
 
-                // Pehle saare cards se 'flipped' class hata do (close kar do)
+                // Close all cards
                 flipCards.forEach(c => c.classList.remove('flipped'));
 
-                // Agar clicked card pehle se flipped nahi tha, to use flip kar do
+                // Flip clicked card if not already flipped
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                 }
