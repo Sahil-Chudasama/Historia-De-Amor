@@ -209,14 +209,16 @@
             visibility: hidden;
         }
 
-        /* --- Fullscreen Heart Blast Overlay --- */
+        /* --- Blur Heart Blast Overlay --- */
         #heart-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #ffe4e1;
+            background: rgba(255, 240, 245, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 9999999;
             display: none;
             overflow: hidden;
@@ -225,7 +227,7 @@
 
         .blast-heart {
             position: absolute;
-            bottom: -50px;
+            bottom: -60px;
             animation: blastFlyUp var(--duration) ease-out forwards;
             font-size: var(--size);
             user-select: none;
@@ -240,7 +242,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-115vh) scale(1.4) rotate(var(--rotation));
+                transform: translateY(-115vh) scale(1.3) rotate(var(--rotation));
                 opacity: 0.9;
             }
         }
@@ -609,27 +611,27 @@
 </head>
 <body>
 
-    <!-- Dark Neutral Lock Screen Overlay -->
+    <!-- Dark Neutral Lock Screen Overlay (English Text) -->
     <div id="lock-screen">
         <div class="lock-card">
-            <h2 id="lock-title">Meanwhile, enjoy the music </h2>
-            <button id="audio-trigger-btn" class="audio-trigger-btn" onclick="startSuspenseAudio()">Click Here 🎧</button>
-            <p id="lock-subtext" class="lock-subtext">Enter the emoji to unlock your surprise 🎁</p>
-            <div id="lock-hint" class="lock-hint">Hint: "Our Special Reaction..." <span style="font-size: 1.3rem; display: inline-block; vertical-align: middle;">🤫</span></div>
+            <h2 id="lock-title">Let the music play while we wait with love... 🎶</h2>
+            <button id="audio-trigger-btn" class="audio-trigger-btn" onclick="startSuspenseAudio()">Turn on Music 🎧</button>
+            <p id="lock-subtext" class="lock-subtext">Type the secret emoji to reveal your surprise 🎁</p>
+            <div id="lock-hint" class="lock-hint">Hint: "Our cute little reaction... <span style="font-size: 1.3rem; display: inline-block; vertical-align: middle;">🤫</span>"</div>
             <div id="lock-inputs" class="lock-input-group">
-                <input type="text" id="emoji-input" class="lock-input" placeholder="Enter Emoji here..." autocomplete="off" autofocus>
-                <button type="button" class="lock-btn" onclick="checkEmoji()">Unlock </button>
+                <input type="text" id="emoji-input" class="lock-input" placeholder="Type emoji here..." autocomplete="off" autofocus>
+                <button type="button" class="lock-btn" onclick="checkEmoji()">Unlock Surprise ✨</button>
             </div>
             <div id="lock-msg" class="lock-message"></div>
         </div>
     </div>
 
-    <!-- Fullscreen Heart Blast Overlay (Unlock par 1.5-2 Sec ke liye aayega) -->
+    <!-- Blur Heart Blast Overlay (2 Sec Continuous Floating Hearts with Blur) -->
     <div id="heart-overlay"></div>
 
     <!-- Main Romantic Content Box -->
     <div class="content-box">
-        <h1>For Khushi <span class="heart-icon">❤️</span> </h1>
+        <h1>For Khushu <span class="heart-icon">❤️</span> </h1>
         <div id="typed-message"></div>
 
         <div class="counter-box">
@@ -680,7 +682,7 @@
 
         <div class="video-btn-container">
             <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Little Surprise For You 🎁🎥
+                A Special Little Surprise For You 🎁🎥
             </button>
         </div>
 
@@ -736,7 +738,7 @@
             } else {
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0; 
-                audioBtn.innerText = "Play Music 🎧";
+                audioBtn.innerText = "Turn on Music 🎧";
                 audioBtn.classList.remove("playing");
             }
         }
@@ -751,19 +753,21 @@
             const overlay = document.getElementById("heart-overlay");
             overlay.style.display = "block";
             overlay.style.opacity = "1";
+            overlay.style.backdropFilter = "blur(10px)";
+            overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
             const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
 
-            // 1. Every 40ms par continuously naye hearts create honge
+            // 1. Every 40ms par continuously naye hearts create honge (2 Sec tak)
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
-                const randomLeft = Math.random() * 95; // % width
-                const randomSize = Math.floor(Math.random() * 35) + 20; // 20px se 55px tak
-                const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2); // Speed fast float ke liye
+                const randomLeft = Math.random() * 95;
+                const randomSize = Math.floor(Math.random() * 55) + 30; // 30px se 85px bade-chhote hearts
+                const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
                 heart.style.left = randomLeft + "vw";
@@ -773,19 +777,19 @@
 
                 overlay.appendChild(heart);
 
-                // Animated heart ko screen se remove kar do performance ke liye
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
             }, 40);
 
-            // 2. Exact 2 Seconds tak naye hearts aayenge, phir interval stop hoga
+            // 2. Exact 2 Seconds baad hearts stop honge aur blur fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
-                overlay.style.transition = "opacity 0.6s ease";
+                overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
                 overlay.style.opacity = "0";
+                overlay.style.backdropFilter = "blur(0px)";
+                overlay.style.webkitBackdropFilter = "blur(0px)";
 
-                // Overlay complete hide ho jayega
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
@@ -803,7 +807,7 @@
                 // 2. Hide lock screen
                 lockScreen.classList.add("fade-out");
 
-                // 3. Trigger 1-2 sec Fullscreen Hearts Burst
+                // 3. Trigger 2 Sec Continuous Hearts Blast with Blur
                 triggerHeartsBlast();
 
             } else {
