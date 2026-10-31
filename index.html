@@ -185,6 +185,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             margin-top: 0;
+            z-index: 10;
         }
 
         .hide-content {
@@ -804,11 +805,22 @@
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 2. Hide lock screen
-                lockScreen.classList.add("fade-out");
+                // 2. Hide lock screen inputs/texts
+                document.getElementById("lock-title").classList.add("hide-content");
+                audioBtn.classList.add("hide-content");
+                document.getElementById("lock-subtext").classList.add("hide-content");
+                document.getElementById("lock-hint").classList.add("hide-content");
+                document.getElementById("lock-inputs").classList.add("hide-content");
 
-                // 3. Trigger 2 Sec Continuous Hearts Blast with Blur
-                triggerHeartsBlast();
+                // 3. Show Success Message
+                lockMsg.className = "lock-message success";
+                lockMsg.innerText = "You got it! 🥳🎉";
+
+                // 4. Trigger blur heart blast and fade out lock screen after a short delay
+                setTimeout(() => {
+                    lockScreen.classList.add("fade-out");
+                    triggerHeartsBlast();
+                }, 900);
 
             } else {
                 lockMsg.className = "lock-message error";
