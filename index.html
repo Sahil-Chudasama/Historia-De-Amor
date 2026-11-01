@@ -687,7 +687,7 @@
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
-                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true. 🧚✨ Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
+                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true 🧚. Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
                 </p>
                 <p style="text-align: right; font-weight: bold; margin-top: 12px; color: #ff2a5f;">
                     Forever Yours,<br>Sahil 🥰
@@ -943,8 +943,8 @@
                 document.getElementById('vinyl').classList.remove('spinning');
                 document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
             }
-            // YouTube embed URL with autoplay enabled
-            youtubePlayer.src = "https://www.youtube.com/embed/d5UUOE9yxJY?autoplay=1&rel=0";
+            // YouTube Embed URL (Modest branding & clean params)
+            youtubePlayer.src = "https://www.youtube.com/embed/d5UUOE9yxJY?autoplay=1&rel=0&modestbranding=1";
         }
 
         function closeVideoModal() {
@@ -953,21 +953,13 @@
             youtubePlayer.src = "";
         }
 
+        // Close on phone back button
         window.addEventListener('popstate', function(event) {
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 youtubePlayer.src = "";
             }
         });
-
-        window.onclick = function(event) {
-            if (event.target == videoModal) {
-                closeVideoModal();
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            }
-        }
     </script>
 </body>
 </html>
