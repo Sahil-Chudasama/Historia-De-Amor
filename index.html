@@ -208,7 +208,6 @@
         .fade-out {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none;
         }
 
         /* --- Blur Heart Blast Overlay --- */
@@ -719,23 +718,16 @@
     <audio id="romantic-song" src="audio.mp3" loop preload="auto"></audio>
 
     <script>
-        // --- Secure & Flexible Emoji Verification Logic ---
-        // Ye hash ab clean format me set hai taaki mobile ya PC kahin se bhi 😤 daalne par turant match ho jaye.
-        const correctHash = "c656d09187ec9c2401f8d48a8cf32d294ae07ecaeefc754d924d55b0aef1c296";
-        
+        // --- Lock Screen Logic (No Storage - Always Asks Password, Secure Config Name) ---
+        const appThemeConfig = "😤";
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
         const lockMsg = document.getElementById("lock-msg");
         const suspenseAudio = document.getElementById("suspense-song");
         const audioBtn = document.getElementById("audio-trigger-btn");
 
-        // Check if already unlocked in the current session
         window.addEventListener("load", function() {
-            if (sessionStorage.getItem("isUnlocked") === "true") {
-                lockScreen.style.display = "none";
-            } else {
-                emojiInput.focus();
-            }
+            emojiInput.focus();
         });
 
         function startSuspenseAudio() {
@@ -766,7 +758,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
-            const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
+            const heartTypes = ["❤️", "💖", "💕", "💗", "💓", "💘", "❤️"];
 
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -800,42 +792,29 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 2000);
+            }, 3000);
         }
 
-        async function hashString(message) {
-            // Normalize input to clean formatting (removes hidden variation selectors like FE0F)
-            const cleanMsg = message.normalize("NFC").replace(/[\uFE00-\uFE0F]/g, "").trim();
-            const msgBuffer = new TextEncoder().encode(cleanMsg);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+        function checkEmoji() {
+            const enteredValue = emojiInput.value.trim();
 
-        async function checkEmoji() {
-            const enteredValue = emojiInput.value;
-            const enteredHash = await hashString(enteredValue);
-
-            if (enteredHash === correctHash) {
-                // 1. Save session state so reopening tab later requires password again
-                sessionStorage.setItem("isUnlocked", "true");
-
-                // 2. Suspense audio immediate stop
+            if (enteredValue === appThemeConfig) {
+                // 1. Suspense audio immediate stop
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 3. Hide lock screen inputs/texts
+                // 2. Hide lock screen inputs/texts
                 document.getElementById("lock-title").classList.add("hide-content");
                 audioBtn.classList.add("hide-content");
                 document.getElementById("lock-subtext").classList.add("hide-content");
                 document.getElementById("lock-hint").classList.add("hide-content");
                 document.getElementById("lock-inputs").classList.add("hide-content");
 
-                // 4. Show Success Message
+                // 3. Show Success Message
                 lockMsg.className = "lock-message success";
                 lockMsg.innerText = "You got it! 🥳🎉";
 
-                // 5. Trigger blur heart blast and fade out lock screen
+                // 4. Trigger blur heart blast and fade out lock screen after a short delay
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
@@ -976,7 +955,7 @@
             popupVideo.play();
         }
 
-    function closeVideoModal() {
+        function closeVideoModal() {
             videoModal.style.display = "none";
             popupVideo.pause();
             popupVideo.currentTime = 0;
