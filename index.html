@@ -719,8 +719,8 @@
     <audio id="romantic-song" src="audio.mp3" loop preload="auto"></audio>
 
     <script>
-        // --- Secure Hashed Password Verification Logic ---
-        // The SHA-256 hash below corresponds strictly to the emoji "😤"
+        // --- Secure & Flexible Emoji Verification Logic ---
+        // Ye hash ab clean format me set hai taaki mobile ya PC kahin se bhi 😤 daalne par turant match ho jaye.
         const correctHash = "c656d09187ec9c2401f8d48a8cf32d294ae07ecaeefc754d924d55b0aef1c296";
         
         const lockScreen = document.getElementById("lock-screen");
@@ -729,7 +729,7 @@
         const suspenseAudio = document.getElementById("suspense-song");
         const audioBtn = document.getElementById("audio-trigger-btn");
 
-        // Check if already unlocked in the current browser session
+        // Check if already unlocked in the current session
         window.addEventListener("load", function() {
             if (sessionStorage.getItem("isUnlocked") === "true") {
                 lockScreen.style.display = "none";
@@ -803,20 +803,21 @@
             }, 2000);
         }
 
-        // Async function to securely compute SHA-256 hash of user input
         async function hashString(message) {
-            const msgBuffer = new TextEncoder().encode(message);
+            // Normalize input to clean formatting (removes hidden variation selectors like FE0F)
+            const cleanMsg = message.normalize("NFC").replace(/[\uFE00-\uFE0F]/g, "").trim();
+            const msgBuffer = new TextEncoder().encode(cleanMsg);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         async function checkEmoji() {
-            const enteredValue = emojiInput.value.trim();
+            const enteredValue = emojiInput.value;
             const enteredHash = await hashString(enteredValue);
 
             if (enteredHash === correctHash) {
-                // 1. Save session state so closing browser tab/reopening next day requires password again
+                // 1. Save session state so reopening tab later requires password again
                 sessionStorage.setItem("isUnlocked", "true");
 
                 // 2. Suspense audio immediate stop
@@ -975,7 +976,7 @@
             popupVideo.play();
         }
 
-        function closeVideoModal() {
+    function closeVideoModal() {
             videoModal.style.display = "none";
             popupVideo.pause();
             popupVideo.currentTime = 0;
