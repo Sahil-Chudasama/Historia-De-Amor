@@ -945,6 +945,7 @@
 
         function openVideoModal() {
             videoModal.style.display = "flex";
+            // Instagram / mobile browser ke liye history state push kar rahe hain taaki back button detect ho sake
             history.pushState({ modalOpen: true }, "");
 
             if (romanticAudio && !romanticAudio.paused) {
@@ -956,18 +957,20 @@
         }
 
         function closeVideoModal() {
-            videoModal.style.display = "none";
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
-            
-            // Agar modal close button se band kiya gaya hai, toh history ko ek step piche le jayein taaki state match rahe
-            if (window.history.state && window.history.state.modalOpen) {
-                history.back();
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.pause();
+                popupVideo.currentTime = 0;
+                
+                // Agar history state active hai toh use safely pop kar do taaki website exit na ho
+                if (window.history.state && window.history.state.modalOpen) {
+                    history.back();
+                }
             }
         }
 
+        // Phone ke physical back button par modal band karne ke liye (Instagram compatible)
         window.addEventListener('popstate', function(event) {
-            // Jab phone ka back button dabega aur modal khula hoga, toh modal chupचाप band ho jayega bina website exit kiye
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 popupVideo.pause();
