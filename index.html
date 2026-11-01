@@ -510,27 +510,20 @@
             max-width: 420px;
             background: #000;
             border-radius: 20px;
-            padding: 8px;
+            padding: 0;
+            overflow: hidden;
             box-shadow: 0 0 25px rgba(255, 42, 95, 0.6);
             border: 2px solid #ff2a5f;
             margin: auto;
         }
-        .video-modal video {
-            width: 100%;
-            height: auto;
-            max-height: 70vh;
-            display: block;
-            border-radius: 14px;
-            object-fit: contain;
-        }
         .close-modal-btn {
             position: absolute;
-            top: -18px;
-            right: -12px;
+            top: 5px;
+            right: 8px;
             background: #ff2a5f;
             color: #ffffff;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             font-size: 22px;
             font-weight: bold;
@@ -703,13 +696,11 @@
         </div>
     </div>
 
+    <!-- YouTube Video Modal -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="close-modal-btn" onclick="closeVideoModal()">&times;</div>
-            <video id="popupVideo" controls playsinline preload="metadata">
-                <source src="birthday_video.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe id="youtubePlayer" width="100%" height="450" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: block; width: 100%; aspect-ratio: 9/16; border-radius: 14px;"></iframe>
         </div>
     </div>
 
@@ -932,7 +923,7 @@
 
         function toggleSecretNote() {
             var note = document.getElementById("secretNote");
-            if (note.style.display === "none" || note.style.display === "") {
+            if (note.style.display === "none" code || note.style.display === "") {
                 note.style.display = "block";
             } else {
                 note.style.display = "none";
@@ -940,7 +931,7 @@
         }
 
         const videoModal = document.getElementById("videoModal");
-        const popupVideo = document.getElementById("popupVideo");
+        const youtubePlayer = document.getElementById("youtubePlayer");
         const romanticAudio = document.getElementById("romantic-song");
 
         function openVideoModal() {
@@ -952,20 +943,20 @@
                 document.getElementById('vinyl').classList.remove('spinning');
                 document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
             }
-            popupVideo.play();
+            // YouTube embed URL with autoplay enabled
+            youtubePlayer.src = "https://www.youtube.com/embed/d5UUOE9yxJY?autoplay=1&rel=0";
         }
 
         function closeVideoModal() {
             videoModal.style.display = "none";
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
+            // Clear src to stop video playback immediately when modal closes
+            youtubePlayer.src = "";
         }
 
         window.addEventListener('popstate', function(event) {
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
-                popupVideo.pause();
-                popupVideo.currentTime = 0;
+                youtubePlayer.src = "";
             }
         });
 
