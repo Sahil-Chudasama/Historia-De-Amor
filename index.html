@@ -208,6 +208,7 @@
         .fade-out {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
         }
 
         /* --- Blur Heart Blast Overlay --- */
@@ -612,7 +613,7 @@
 </head>
 <body>
 
-    <!-- Dark Neutral Lock Screen Overlay (English Text) -->
+    <!-- Dark Neutral Lock Screen Overlay -->
     <div id="lock-screen">
         <div class="lock-card">
             <h2 id="lock-title">Meanwhile, Enjoy the music</h2>
@@ -627,7 +628,7 @@
         </div>
     </div>
 
-    <!-- Blur Heart Blast Overlay (2 Sec Continuous Floating Hearts with Blur) -->
+    <!-- Blur Heart Blast Overlay -->
     <div id="heart-overlay"></div>
 
     <!-- Main Romantic Content Box -->
@@ -718,16 +719,23 @@
     <audio id="romantic-song" src="audio.mp3" loop preload="auto"></audio>
 
     <script>
-        // --- Lock Screen Logic ---
-        const correctEmoji = "😤";
+        // --- Secure Hashed Password Verification Logic ---
+        // The SHA-256 hash below corresponds strictly to the emoji "😤"
+        const correctHash = "c656d09187ec9c2401f8d48a8cf32d294ae07ecaeefc754d924d55b0aef1c296";
+        
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
         const lockMsg = document.getElementById("lock-msg");
         const suspenseAudio = document.getElementById("suspense-song");
         const audioBtn = document.getElementById("audio-trigger-btn");
 
+        // Check if already unlocked in the current browser session
         window.addEventListener("load", function() {
-            emojiInput.focus();
+            if (sessionStorage.getItem("isUnlocked") === "true") {
+                lockScreen.style.display = "none";
+            } else {
+                emojiInput.focus();
+            }
         });
 
         function startSuspenseAudio() {
@@ -758,16 +766,15 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
-            const heartTypes = ["❤️", "💖", "💕", "💗", "💓", "💘", "❤️"];
+            const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
 
-            // 1. Every 40ms par continuously naye hearts create honge (2 Sec tak)
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
                 const randomLeft = Math.random() * 95;
-                const randomSize = Math.floor(Math.random() * 55) + 30; // 30px se 85px bade-chhote hearts
+                const randomSize = Math.floor(Math.random() * 55) + 30;
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
@@ -783,7 +790,6 @@
                 }, parseFloat(randomDuration) * 1000);
             }, 40);
 
-            // 2. Exact 2 Seconds baad hearts stop honge aur blur fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
@@ -794,29 +800,41 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 3000);
+            }, 2000);
         }
 
-        function checkEmoji() {
-            const enteredValue = emojiInput.value.trim();
+        // Async function to securely compute SHA-256 hash of user input
+        async function hashString(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
-            if (enteredValue === correctEmoji) {
-                // 1. Suspense audio immediate stop
+        async function checkEmoji() {
+            const enteredValue = emojiInput.value.trim();
+            const enteredHash = await hashString(enteredValue);
+
+            if (enteredHash === correctHash) {
+                // 1. Save session state so closing browser tab/reopening next day requires password again
+                sessionStorage.setItem("isUnlocked", "true");
+
+                // 2. Suspense audio immediate stop
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 2. Hide lock screen inputs/texts
+                // 3. Hide lock screen inputs/texts
                 document.getElementById("lock-title").classList.add("hide-content");
                 audioBtn.classList.add("hide-content");
                 document.getElementById("lock-subtext").classList.add("hide-content");
                 document.getElementById("lock-hint").classList.add("hide-content");
                 document.getElementById("lock-inputs").classList.add("hide-content");
 
-                // 3. Show Success Message
+                // 4. Show Success Message
                 lockMsg.className = "lock-message success";
                 lockMsg.innerText = "You got it! 🥳🎉";
 
-                // 4. Trigger blur heart blast and fade out lock screen after a short delay
+                // 5. Trigger blur heart blast and fade out lock screen
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
@@ -924,10 +942,8 @@
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
 
-                // Close all cards
                 flipCards.forEach(c => c.classList.remove('flipped'));
 
-                // Flip clicked card if not already flipped
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                 }
