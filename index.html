@@ -942,10 +942,11 @@
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
+        let modalOpenedViaHistory = false;
 
         function openVideoModal() {
             videoModal.style.display = "flex";
-            // Instagram / mobile browser ke liye history state push kar rahe hain taaki back button detect ho sake
+            modalOpenedViaHistory = true;
             history.pushState({ modalOpen: true }, "");
 
             if (romanticAudio && !romanticAudio.paused) {
@@ -962,19 +963,19 @@
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
                 
-                // Agar history state active hai toh use safely pop kar do taaki website exit na ho
-                if (window.history.state && window.history.state.modalOpen) {
+                if (modalOpenedViaHistory) {
+                    modalOpenedViaHistory = false;
                     history.back();
                 }
             }
         }
 
-        // Phone ke physical back button par modal band karne ke liye (Instagram compatible)
         window.addEventListener('popstate', function(event) {
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
+                modalOpenedViaHistory = false;
             }
         });
     </script>
