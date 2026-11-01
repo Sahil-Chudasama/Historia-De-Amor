@@ -780,7 +780,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 40);
+            }, 20);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -913,7 +913,7 @@
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
-            setInterval(createHeart, 300);
+            setInterval(createHeart, 100);
         });
 
         // Accordion Logic for Memory Cards
@@ -959,17 +959,21 @@
             videoModal.style.display = "none";
             popupVideo.pause();
             popupVideo.currentTime = 0;
+            
+            // Agar modal close button se band kiya gaya hai, toh history ko ek step piche le jayein taaki state match rahe
+            if (window.history.state && window.history.state.modalOpen) {
+                history.back();
+            }
         }
 
         window.addEventListener('popstate', function(event) {
+            // Jab phone ka back button dabega aur modal khula hoga, toh modal chupचाप band ho jayega bina website exit kiye
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
             }
         });
-
-        
     </script>
 </body>
 </html>
