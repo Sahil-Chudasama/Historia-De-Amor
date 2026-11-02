@@ -707,7 +707,7 @@
         <div class="video-modal-content">
             <div class="close-modal-btn" onclick="closeVideoModal()">&times;</div>
             <video id="popupVideo" controls playsinline preload="metadata">
-                <source src="row/birthday_video.mp4" type="video/mp4">
+                <source src="birthday_video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -780,7 +780,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 20);
+            }, 40);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -913,7 +913,7 @@
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
-            setInterval(createHeart, 100);
+            setInterval(createHeart, 250);
         });
 
         // Accordion Logic for Memory Cards
@@ -942,11 +942,9 @@
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
-        let modalOpenedViaHistory = false;
 
         function openVideoModal() {
             videoModal.style.display = "flex";
-            modalOpenedViaHistory = true;
             history.pushState({ modalOpen: true }, "");
 
             if (romanticAudio && !romanticAudio.paused) {
@@ -958,16 +956,9 @@
         }
 
         function closeVideoModal() {
-            if (videoModal.style.display === "flex") {
-                videoModal.style.display = "none";
-                popupVideo.pause();
-                popupVideo.currentTime = 0;
-                
-                if (modalOpenedViaHistory) {
-                    modalOpenedViaHistory = false;
-                    history.back();
-                }
-            }
+            videoModal.style.display = "none";
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
         }
 
         window.addEventListener('popstate', function(event) {
@@ -975,9 +966,17 @@
                 videoModal.style.display = "none";
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
-                modalOpenedViaHistory = false;
             }
         });
+
+        window.onclick = function(event) {
+            if (event.target == videoModal) {
+                closeVideoModal();
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
+        }
     </script>
 </body>
 </html>
