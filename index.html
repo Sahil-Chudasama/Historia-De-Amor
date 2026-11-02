@@ -763,43 +763,54 @@
             overlay.style.backdropFilter = "blur(10px)";
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
-
-            const heartTypes = ["❤️", "💖", "💕", "❤️", "💓","❤️"];
-
+        
+            const heartTypes = ["❤️", "💖", "💕", "❤️", "💓", "❤️"];
+        
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
+                // Size logic: Small (15-28px), Medium (30-50px), Large (55-85px)
+                const sizeCategory = Math.random();
+                let randomSize;
+                if (sizeCategory < 0.4) {
+                    randomSize = Math.floor(Math.random() * 14) + 15;  // Small
+                } else if (sizeCategory < 0.8) {
+                    randomSize = Math.floor(Math.random() * 21) + 30;  // Medium
+                } else {
+                    randomSize = Math.floor(Math.random() * 31) + 55;  // Large
+                }
+        
                 const randomLeft = Math.random() * 95;
-                const randomSize = Math.floor(Math.random() * 55) + 30;
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
-
+        
                 heart.style.left = randomLeft + "vw";
                 heart.style.setProperty('--size', randomSize + "px");
                 heart.style.setProperty('--duration', randomDuration + "s");
                 heart.style.setProperty('--rotation', randomRotation);
-
+        
                 overlay.appendChild(heart);
-
+        
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 20);
-
+            }, 15); // Interval ko 15ms kar diya hai taaki aur zyada (bohat sare) hearts generate hon
+        
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
                 overlay.style.opacity = "0";
                 overlay.style.backdropFilter = "blur(0px)";
                 overlay.style.webkitBackdropFilter = "blur(0px)";
-
+        
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
             }, 2000);
         }
+                
 
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
