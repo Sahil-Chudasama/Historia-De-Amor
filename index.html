@@ -947,6 +947,17 @@
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
 
+        // Jab video bina pause kiye khatam ho jaye, tab modal close ho jaye aur history back ho jaye
+        popupVideo.addEventListener('ended', function() {
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.currentTime = 0;
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
+        });
+
         function openVideoModal() {
             videoModal.style.display = "flex";
             history.pushState({ modalOpen: true }, "");
