@@ -683,7 +683,7 @@
 
         <div class="video-btn-container">
             <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Special Little Surprise For You 🎁🎥
+                A Special Little Surprise For You 🎁
             </button>
         </div>
 
@@ -694,7 +694,7 @@
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
-                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true. 🧚✨ Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
+                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true 🧚. Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
                 </p>
                 <p style="text-align: right; font-weight: bold; margin-top: 12px; color: #ff2a5f;">
                     Forever Yours,<br>Sahil 🥰
@@ -780,7 +780,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 40);
+            }, 20);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -913,7 +913,7 @@
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
-            setInterval(createHeart, 300);
+            setInterval(createHeart, 100);
         });
 
         // Accordion Logic for Memory Cards
@@ -947,18 +947,27 @@
             videoModal.style.display = "flex";
             history.pushState({ modalOpen: true }, "");
 
+            // Video initially paused rahegi, user khud play karega (No Autoplay conflict)
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
+
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
                 document.getElementById('vinyl').classList.remove('spinning');
                 document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
             }
-            popupVideo.play();
         }
 
         function closeVideoModal() {
-            videoModal.style.display = "none";
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.pause();
+                popupVideo.currentTime = 0;
+                
+                if (window.history.state && window.history.state.modalOpen) {
+                    history.back();
+                }
+            }
         }
 
         window.addEventListener('popstate', function(event) {
@@ -969,14 +978,7 @@
             }
         });
 
-        window.onclick = function(event) {
-            if (event.target == videoModal) {
-                closeVideoModal();
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            }
-        }
+        
     </script>
 </body>
 </html>
