@@ -523,15 +523,6 @@
             border-radius: 14px;
             object-fit: contain;
         }
-        .video-instruction {
-            color: #ff758f;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
         .close-modal-btn {
             position: absolute;
             top: -18px;
@@ -692,7 +683,7 @@
 
         <div class="video-btn-container">
             <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Special Little Surprise For You 🎁
+                A Special Little Surprise For You 🎁🎥
             </button>
         </div>
 
@@ -703,7 +694,7 @@
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
-                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true 🧚. Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
+                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true. 🧚✨ Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
                 </p>
                 <p style="text-align: right; font-weight: bold; margin-top: 12px; color: #ff2a5f;">
                     Forever Yours,<br>Sahil 🥰
@@ -712,11 +703,9 @@
         </div>
     </div>
 
-    <!-- Video Modal with "Tap Video to Play" text -->
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content">
             <div class="close-modal-btn" onclick="closeVideoModal()">&times;</div>
-            <div class="video-instruction">Tap Video to Play 🎬</div>
             <video id="popupVideo" controls playsinline preload="metadata">
                 <source src="birthday_video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -729,7 +718,7 @@
     <audio id="romantic-song" src="audio.mp3" loop preload="auto"></audio>
 
     <script>
-        // --- Lock Screen Logic ---
+        // --- Lock Screen Logic (No Storage - Always Asks Password, Secure Config Name) ---
         const appThemeConfig = "😤";
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
@@ -810,18 +799,22 @@
             const enteredValue = emojiInput.value.trim();
 
             if (enteredValue === appThemeConfig) {
+                // 1. Suspense audio immediate stop
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
+                // 2. Hide lock screen inputs/texts
                 document.getElementById("lock-title").classList.add("hide-content");
                 audioBtn.classList.add("hide-content");
                 document.getElementById("lock-subtext").classList.add("hide-content");
                 document.getElementById("lock-hint").classList.add("hide-content");
                 document.getElementById("lock-inputs").classList.add("hide-content");
 
+                // 3. Show Success Message
                 lockMsg.className = "lock-message success";
                 lockMsg.innerText = "You got it! 🥳🎉";
 
+                // 4. Trigger blur heart blast and fade out lock screen after a short delay
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
@@ -920,7 +913,7 @@
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
-            setInterval(createHeart, 250);
+            setInterval(createHeart, 300);
         });
 
         // Accordion Logic for Memory Cards
@@ -946,34 +939,26 @@
             }
         }
 
-        // --- Video Modal & Back Button Logic ---
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
 
         function openVideoModal() {
             videoModal.style.display = "flex";
-            window.history.pushState({ modalOpen: true }, "");
+            history.pushState({ modalOpen: true }, "");
 
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
                 document.getElementById('vinyl').classList.remove('spinning');
-                document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
+                document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
             }
-            // Video autoplay nahi hogi, paused rahegi aur user ko "Tap Video to Play" dikhega
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
+            popupVideo.play();
         }
 
         function closeVideoModal() {
-            if (videoModal.style.display === "flex") {
-                videoModal.style.display = "none";
-                popupVideo.pause();
-                popupVideo.currentTime = 0;
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            }
+            videoModal.style.display = "none";
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
         }
 
         window.addEventListener('popstate', function(event) {
@@ -983,6 +968,15 @@
                 popupVideo.currentTime = 0;
             }
         });
+
+        window.onclick = function(event) {
+            if (event.target == videoModal) {
+                closeVideoModal();
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
+        }
     </script>
 </body>
 </html>
