@@ -612,7 +612,7 @@
 </head>
 <body>
 
-    <!-- Dark Neutral Lock Screen Overlay -->
+    <!-- Dark Neutral Lock Screen Overlay (English Text) -->
     <div id="lock-screen">
         <div class="lock-card">
             <h2 id="lock-title">Meanwhile, Enjoy the music</h2>
@@ -627,7 +627,7 @@
         </div>
     </div>
 
-    <!-- Blur Heart Blast Overlay -->
+    <!-- Blur Heart Blast Overlay (2 Sec Continuous Floating Hearts with Blur) -->
     <div id="heart-overlay"></div>
 
     <!-- Main Romantic Content Box -->
@@ -683,7 +683,7 @@
 
         <div class="video-btn-container">
             <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Special Little Surprise For You 🎁
+                A Special Little Surprise For You 🎁🎥
             </button>
         </div>
 
@@ -694,7 +694,7 @@
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
-                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true 🧚. Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
+                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true. 🧚✨ Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
                 </p>
                 <p style="text-align: right; font-weight: bold; margin-top: 12px; color: #ff2a5f;">
                     Forever Yours,<br>Sahil 🥰
@@ -718,8 +718,8 @@
     <audio id="romantic-song" src="audio.mp3" loop preload="auto"></audio>
 
     <script>
-        // --- Lock Screen Logic (No Storage - Always Asks Password, Secure Config Name) ---
-        const appThemeConfig = "😤";
+        // --- Lock Screen Logic ---
+        const correctEmoji = "😤";
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
         const lockMsg = document.getElementById("lock-msg");
@@ -758,15 +758,16 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
-            const heartTypes = ["❤️", "💖", "💕", "💗", "💓", "💘", "❤️"];
+            const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
 
+            // 1. Every 40ms par continuously naye hearts create honge (2 Sec tak)
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
                 const randomLeft = Math.random() * 95;
-                const randomSize = Math.floor(Math.random() * 55) + 30;
+                const randomSize = Math.floor(Math.random() * 55) + 30; // 30px se 85px bade-chhote hearts
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
@@ -780,8 +781,9 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 20);
+            }, 40);
 
+            // 2. Exact 2 Seconds baad hearts stop honge aur blur fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
@@ -792,13 +794,13 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 3000);
+            }, 2000);
         }
 
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
 
-            if (enteredValue === appThemeConfig) {
+            if (enteredValue === correctEmoji) {
                 // 1. Suspense audio immediate stop
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
@@ -913,7 +915,7 @@
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
-            setInterval(createHeart, 100);
+            setInterval(createHeart, 300);
         });
 
         // Accordion Logic for Memory Cards
@@ -922,8 +924,10 @@
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
 
+                // Close all cards
                 flipCards.forEach(c => c.classList.remove('flipped'));
 
+                // Flip clicked card if not already flipped
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                 }
@@ -947,27 +951,18 @@
             videoModal.style.display = "flex";
             history.pushState({ modalOpen: true }, "");
 
-            // Video initially paused rahegi, user khud play karega (No Autoplay conflict)
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
-
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
                 document.getElementById('vinyl').classList.remove('spinning');
                 document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
             }
+            popupVideo.play();
         }
 
         function closeVideoModal() {
-            if (videoModal.style.display === "flex") {
-                videoModal.style.display = "none";
-                popupVideo.pause();
-                popupVideo.currentTime = 0;
-                
-                if (window.history.state && window.history.state.modalOpen) {
-                    history.back();
-                }
-            }
+            videoModal.style.display = "none";
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
         }
 
         window.addEventListener('popstate', function(event) {
@@ -978,7 +973,14 @@
             }
         });
 
-        
+        window.onclick = function(event) {
+            if (event.target == videoModal) {
+                closeVideoModal();
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
+        }
     </script>
 </body>
 </html>
