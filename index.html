@@ -480,7 +480,6 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: pulse-glow 2s infinite;
             cursor: pointer;
-            text-decoration: none;
         }
         .birthday-video-btn:hover {
             transform: scale(1.05);
@@ -490,6 +489,71 @@
             0% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(255, 42, 95, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.88);
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 420px;
+            background: #000;
+            border-radius: 20px;
+            padding: 8px;
+            box-shadow: 0 0 25px rgba(255, 42, 95, 0.6);
+            border: 2px solid #ff2a5f;
+            margin: auto;
+        }
+        .video-modal video {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            display: block;
+            border-radius: 14px;
+            object-fit: contain;
+        }
+        .video-instruction {
+            color: #ff758f;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: -18px;
+            right: -12px;
+            background: #ff2a5f;
+            color: #ffffff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            border: 2px solid #ffffff;
+            z-index: 100001;
+        }
+        .close-modal-btn:hover {
+            transform: scale(1.1);
+            background: #e01e4f;
         }
 
         .envelope-container {
@@ -627,10 +691,9 @@
         </div>
 
         <div class="video-btn-container">
-            <!-- Yeh button ab direct naye page 'video.html' par le jayega -->
-            <a href="video.html" class="birthday-video-btn">
+            <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
                 A Special Little Surprise For You 🎁
-            </a>
+            </button>
         </div>
 
         <div class="envelope-container">
@@ -646,6 +709,18 @@
                     Forever Yours,<br>Sahil 🥰
                 </p>
             </div>
+        </div>
+    </div>
+
+    <!-- Video Modal with "Tap Video to Play" text -->
+    <div id="videoModal" class="video-modal">
+        <div class="video-modal-content">
+            <div class="close-modal-btn" onclick="closeVideoModal()">&times;</div>
+            <div class="video-instruction">Tap Video to Play 🎬</div>
+            <video id="popupVideo" controls playsinline preload="metadata">
+                <source src="birthday_video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
 
@@ -870,6 +945,44 @@
                 note.style.display = "none";
             }
         }
+
+        // --- Video Modal & Back Button Logic ---
+        const videoModal = document.getElementById("videoModal");
+        const popupVideo = document.getElementById("popupVideo");
+        const romanticAudio = document.getElementById("romantic-song");
+
+        function openVideoModal() {
+            videoModal.style.display = "flex";
+            window.history.pushState({ modalOpen: true }, "");
+
+            if (romanticAudio && !romanticAudio.paused) {
+                romanticAudio.pause();
+                document.getElementById('vinyl').classList.remove('spinning');
+                document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
+            }
+            // Video autoplay nahi hogi, paused rahegi aur user ko "Tap Video to Play" dikhega
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
+        }
+
+        function closeVideoModal() {
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.pause();
+                popupVideo.currentTime = 0;
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
+        }
+
+        window.addEventListener('popstate', function(event) {
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.pause();
+                popupVideo.currentTime = 0;
+            }
+        });
     </script>
 </body>
 </html>
