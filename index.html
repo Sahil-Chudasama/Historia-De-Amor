@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Por-Amor-Khushi❤</title>
+    <title>Historia-De-Amor</title>
 
     <!-- Social Media Link Share Preview Control -->
-    <meta property="title" content="Por-Amor-Khushi ❤️">
-    <meta property="description" content="A special surprise crafted with love">
-    <meta property="og:title" content="Por-Amor-Khushi ❤️">
-    <meta property="og:description" content="A special surprise crafted with love">
+    <meta property="title" content="Historia-De-Amor">
+    <meta property="description" content="A special surprise">
+    <meta property="og:title" content="Historia-De-Amor">
+    <meta property="og:description" content="A special surprise">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts -->
@@ -646,7 +646,7 @@
             </div>
         </div>
         
-        <div class="gallery-title">Tap Cards to Reveal Memories 📸</div>
+        <div class="gallery-title">Tap Cards to Reveal Memories </div>
         <div class="cards-grid">
             <div class="flip-card">
                 <div class="flip-card-inner">
@@ -683,7 +683,7 @@
 
         <div class="video-btn-container">
             <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Special Little Surprise For You 🎁🎥
+                A Little Surprise For You 🎁
             </button>
         </div>
 
@@ -694,7 +694,7 @@
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
-                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true. 🧚✨ Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
+                    You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful fairy tale dream come true 🧚. Thank you for being my smile and my favorite person in the world. No matter where life takes us, my heart will always belong to you.
                 </p>
                 <p style="text-align: right; font-weight: bold; margin-top: 12px; color: #ff2a5f;">
                     Forever Yours,<br>Sahil 🥰
@@ -764,7 +764,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
-            const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
+            const heartTypes = ["❤️", "💖", "💕", "💗", "💓","❤️"];
 
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -786,7 +786,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 40);
+            }, 20);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -979,11 +979,6 @@
             }
         });
 
-        window.onclick = function(event) {
-            if (event.target == videoModal) {
-                closeVideoModal();
-            }
-        }
     </script>
 </body>
 </html>
