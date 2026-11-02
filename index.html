@@ -760,14 +760,13 @@
 
             const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
 
-            // 1. Every 40ms par continuously naye hearts create honge (2 Sec tak)
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
                 const randomLeft = Math.random() * 95;
-                const randomSize = Math.floor(Math.random() * 55) + 30; // 30px se 85px bade-chhote hearts
+                const randomSize = Math.floor(Math.random() * 55) + 30;
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
@@ -783,7 +782,6 @@
                 }, parseFloat(randomDuration) * 1000);
             }, 40);
 
-            // 2. Exact 2 Seconds baad hearts stop honge aur blur fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
@@ -801,22 +799,18 @@
             const enteredValue = emojiInput.value.trim();
 
             if (enteredValue === correctEmoji) {
-                // 1. Suspense audio immediate stop
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 2. Hide lock screen inputs/texts
                 document.getElementById("lock-title").classList.add("hide-content");
                 audioBtn.classList.add("hide-content");
                 document.getElementById("lock-subtext").classList.add("hide-content");
                 document.getElementById("lock-hint").classList.add("hide-content");
                 document.getElementById("lock-inputs").classList.add("hide-content");
 
-                // 3. Show Success Message
                 lockMsg.className = "lock-message success";
                 lockMsg.innerText = "You got it! 🥳🎉";
 
-                // 4. Trigger blur heart blast and fade out lock screen after a short delay
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
@@ -924,10 +918,8 @@
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
 
-                // Close all cards
                 flipCards.forEach(c => c.classList.remove('flipped'));
 
-                // Flip clicked card if not already flipped
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                 }
@@ -947,33 +939,27 @@
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
 
-        // Jab video bina pause kiye khatam ho jaye, tab modal close ho jaye aur history back ho jaye
-        popupVideo.addEventListener('ended', function() {
-            if (videoModal.style.display === "flex") {
-                videoModal.style.display = "none";
-                popupVideo.currentTime = 0;
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            }
-        });
-
         function openVideoModal() {
             videoModal.style.display = "flex";
-            history.pushState({ modalOpen: true }, "");
+            window.history.pushState({ modalOpen: true }, "");
 
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
                 document.getElementById('vinyl').classList.remove('spinning');
-                document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
+                document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
             }
             popupVideo.play();
         }
 
         function closeVideoModal() {
-            videoModal.style.display = "none";
-            popupVideo.pause();
-            popupVideo.currentTime = 0;
+            if (videoModal.style.display === "flex") {
+                videoModal.style.display = "none";
+                popupVideo.pause();
+                popupVideo.currentTime = 0;
+                if (window.history.state && window.history.state.modalOpen) {
+                    window.history.back();
+                }
+            }
         }
 
         window.addEventListener('popstate', function(event) {
@@ -983,15 +969,6 @@
                 popupVideo.currentTime = 0;
             }
         });
-
-        window.onclick = function(event) {
-            if (event.target == videoModal) {
-                closeVideoModal();
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
-            }
-        }
     </script>
 </body>
 </html>
