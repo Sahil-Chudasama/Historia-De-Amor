@@ -627,7 +627,7 @@
         </div>
     </div>
 
-    <!-- Blur Heart Blast Overlay (2 Sec Continuous Floating Hearts with Blur) -->
+    <!-- Blur Heart Blast Overlay -->
     <div id="heart-overlay"></div>
 
     <!-- Main Romantic Content Box -->
@@ -726,8 +726,14 @@
         const suspenseAudio = document.getElementById("suspense-song");
         const audioBtn = document.getElementById("audio-trigger-btn");
 
+        // Page Load Check (Session Storage se password check)
         window.addEventListener("load", function() {
-            emojiInput.focus();
+            if (sessionStorage.getItem("isUnlocked") === "true") {
+                lockScreen.style.display = "none";
+            } else {
+                lockScreen.style.display = "flex";
+                emojiInput.focus();
+            }
         });
 
         function startSuspenseAudio() {
@@ -760,14 +766,13 @@
 
             const heartTypes = ["❤️", "💖", "💕", "💗", "💓"];
 
-            // 1. Every 40ms par continuously naye hearts create honge (2 Sec tak)
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
                 const randomLeft = Math.random() * 95;
-                const randomSize = Math.floor(Math.random() * 55) + 30; // 30px se 85px bade-chhote hearts
+                const randomSize = Math.floor(Math.random() * 55) + 30;
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
 
@@ -783,7 +788,6 @@
                 }, parseFloat(randomDuration) * 1000);
             }, 40);
 
-            // 2. Exact 2 Seconds baad hearts stop honge aur blur fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
@@ -801,22 +805,20 @@
             const enteredValue = emojiInput.value.trim();
 
             if (enteredValue === correctEmoji) {
-                // 1. Suspense audio immediate stop
+                sessionStorage.setItem("isUnlocked", "true");
+
                 suspenseAudio.pause();
                 suspenseAudio.currentTime = 0;
 
-                // 2. Hide lock screen inputs/texts
                 document.getElementById("lock-title").classList.add("hide-content");
                 audioBtn.classList.add("hide-content");
                 document.getElementById("lock-subtext").classList.add("hide-content");
                 document.getElementById("lock-hint").classList.add("hide-content");
                 document.getElementById("lock-inputs").classList.add("hide-content");
 
-                // 3. Show Success Message
                 lockMsg.className = "lock-message success";
                 lockMsg.innerText = "You got it! 🥳🎉";
 
-                // 4. Trigger blur heart blast and fade out lock screen after a short delay
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
@@ -918,16 +920,11 @@
             setInterval(createHeart, 300);
         });
 
-        // Accordion Logic for Memory Cards
         const flipCards = document.querySelectorAll('.flip-card');
         flipCards.forEach(card => {
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
-
-                // Close all cards
                 flipCards.forEach(c => c.classList.remove('flipped'));
-
-                // Flip clicked card if not already flipped
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                 }
@@ -943,6 +940,7 @@
             }
         }
 
+        // --- Video Modal & Navigation Logic ---
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
@@ -954,17 +952,25 @@
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
                 document.getElementById('vinyl').classList.remove('spinning');
-                document.getElementById('music-button').innerText = "Tap Me to Start the Music 🎵";
+                document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
             }
-            popupVideo.play();
+
+            // Video starting par pause aur reset rahegi (No Autostart)
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
         }
 
         function closeVideoModal() {
             videoModal.style.display = "none";
             popupVideo.pause();
             popupVideo.currentTime = 0;
+
+            if (window.history.state && window.history.state.modalOpen) {
+                window.history.back();
+            }
         }
 
+        // Phone ka Back Button handle karne ke liye
         window.addEventListener('popstate', function(event) {
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
@@ -976,9 +982,6 @@
         window.onclick = function(event) {
             if (event.target == videoModal) {
                 closeVideoModal();
-                if (window.history.state && window.history.state.modalOpen) {
-                    window.history.back();
-                }
             }
         }
     </script>
