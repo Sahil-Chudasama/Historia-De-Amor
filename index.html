@@ -6,9 +6,9 @@
     <title>Historia-De-Amor</title>
 
     <!-- Social Media Link Share Preview Control -->
-    <meta property="title" content="Historia-De-Amor">
+    <meta property="title" content="Our-friendship">
     <meta property="description" content="A special surprise">
-    <meta property="og:title" content="Historia-De-Amor">
+    <meta property="og:title" content="Our-friendship">
     <meta property="og:description" content="A special surprise">
     <meta property="og:type" content="website">
 
@@ -266,12 +266,29 @@
         }
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.2rem;
+            font-size: 3.0rem;
             color: var(--primary-color);
             text-shadow: 0 0 10px rgba(255, 42, 95, 0.2);
-            margin-bottom: 5px;
+            margin-bottom: 2px;
         }
         
+        .signature-name {
+            text-align: right;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            margin: 0 15px 10px 0;
+            font-weight: 600;
+        }
+
+        .subtitle-text {
+            font-size: 1.1rem;
+            color: #ff6b8b;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
         .heart-icon {
             display: inline-block;
             animation: pulse-heart-glow 1.5s infinite alternate ease-in-out;
@@ -632,7 +649,9 @@
 
     <!-- Main Romantic Content Box -->
     <div class="content-box">
-        <h1>For Khushi <span class="heart-icon">❤️</span> </h1>
+        <h1>Historia de Amor</h1>
+        <div class="signature-name">- Sahil & Khushi</div>
+        <div class="subtitle-text">🫶 Forever Together 🫶</div>
         <div id="typed-message"></div>
 
         <div class="counter-box">
@@ -764,7 +783,8 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
         
-            const heartTypes = ["🩷", "🩷", "🩷", "🩷", "🩷", "🩷","🩷","🩷","🩷"];
+            // Pure Red Heart Emojis (Small, Medium, Large sizes handled below)
+            const heartTypes = ["🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
         
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -796,7 +816,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 15); // Interval ko 15ms kar diya hai taaki aur zyada (bohat sare) hearts generate hon
+            }, 15);
         
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -810,7 +830,6 @@
                 }, 600);
             }, 2000);
         }
-                
 
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
@@ -850,7 +869,7 @@
 
         // --- Main Webpage Scripts ---
         document.addEventListener("DOMContentLoaded", function() {
-            const textToType = "🫶 Eres mi corazón 🫶";
+            const textToType = "Eres mi corazón";
             const element = document.getElementById("typed-message");
             let i = 0;
             function typeWriter() {
@@ -966,7 +985,6 @@
                 document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
             }
 
-            // Video starting par pause aur reset rahegi (No Autostart)
             popupVideo.pause();
             popupVideo.currentTime = 0;
         }
@@ -981,7 +999,6 @@
             }
         }
 
-        // Phone ka Back Button handle karne ke liye
         window.addEventListener('popstate', function(event) {
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
@@ -989,7 +1006,6 @@
                 popupVideo.currentTime = 0;
             }
         });
-
     </script>
 </body>
 </html>
