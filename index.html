@@ -431,33 +431,44 @@
             transform: scale(1.1);
         }
 
-        /* Active / Playing State (Red Highlight) */
+        /* Active / Playing State (Red Highlight) with centered vertical alignment for pause symbol */
         .icon-action-btn.playing,
         .icon-action-btn.active {
             background: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
-            box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4),
+            box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4);
             transform: translateY(-2px);
         }
 
-        /* Special glow pulse for video surprise button */
+        /* Special glow pulse for video surprise button (Transparent with glowing ring) */
         .icon-action-btn.pulse-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid rgba(255, 42, 95, 0.4);
             animation: pulse-glow 2s infinite;
-            background: linear-gradient(45deg, #ff2a5f, #ff758f);
-            border: none;
-            color: white;
         }
 
         .icon-action-btn.pulse-btn.active {
             background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
             animation: none;
+            transform: translateY(-2px);
         }
 
         @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.7); }
-            70% { box-shadow: 0 0 0 14px rgba(255, 42, 95, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
+            0% { 
+                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.6); 
+                border-color: rgba(255, 42, 95, 0.8);
+            }
+            70% { 
+                box-shadow: 0 0 0 12px rgba(255, 42, 95, 0); 
+                border-color: rgba(255, 42, 95, 0.3);
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); 
+                border-color: rgba(255, 42, 95, 0.4);
+            }
         }
 
         .video-modal {
@@ -672,7 +683,7 @@
 
     <script>
         // --- Lock Screen Logic ---
-        const correctEmoji = "😤";
+        const appConfigValidationKey = "😤";
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
         const lockMsg = document.getElementById("lock-msg");
@@ -766,7 +777,7 @@
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
 
-            if (enteredValue === correctEmoji) {
+            if (enteredValue === appConfigValidationKey) {
                 sessionStorage.setItem("isUnlocked", "true");
 
                 suspenseAudio.pause();
