@@ -442,31 +442,21 @@
 
         /* Special glow pulse for video surprise button */
         .icon-action-btn.pulse-btn {
-            background: rgba(255, 255, 255, 0.85);
-            border: 2px solid rgba(255, 42, 95, 0.4);
             animation: pulse-glow 2s infinite;
+            background: linear-gradient(45deg, #ff2a5f, #ff758f);
+            border: none;
+            color: white;
         }
 
         .icon-action-btn.pulse-btn.active {
             background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
             animation: none;
         }
 
         @keyframes pulse-glow {
-            0% { 
-                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.6); 
-                border-color: rgba(255, 42, 95, 0.8);
-            }
-            70% { 
-                box-shadow: 0 0 0 12px rgba(255, 42, 95, 0; 
-                border-color: rgba(255, 42, 95, 0.3);
-            }
-            100% { 
-                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); 
-                border-color: rgba(255, 42, 95, 0.4);
-            }
+            0% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(255, 42, 95, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
         }
 
         .video-modal {
@@ -681,7 +671,7 @@
 
     <script>
         // --- Lock Screen Logic ---
-        const appConfigValidationKey = "😤";
+        const correctEmoji = "😤";
         const lockScreen = document.getElementById("lock-screen");
         const emojiInput = document.getElementById("emoji-input");
         const lockMsg = document.getElementById("lock-msg");
@@ -726,7 +716,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
         
-            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
+            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
         
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -769,13 +759,13 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 2500);
+            }, 2000);
         }
 
         function checkEmoji() {
             const enteredValue = emojiInput.value.trim();
 
-            if (enteredValue === appConfigValidationKey) {
+            if (enteredValue === correctEmoji) {
                 sessionStorage.setItem("isUnlocked", "true");
 
                 suspenseAudio.pause();
