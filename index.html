@@ -406,7 +406,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 18px;
             margin-top: 20px;
             margin-bottom: 10px;
         }
@@ -414,13 +414,13 @@
         .icon-action-btn {
             background: rgba(255, 255, 255, 0.85);
             border: 2px solid rgba(255, 42, 95, 0.3);
-            width: 55px;
-            height: 55px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(255, 42, 95, 0.2);
             transition: all 0.3s ease;
@@ -429,8 +429,14 @@
 
         .icon-action-btn:hover {
             transform: scale(1.1);
+        }
+
+        /* Active / Playing State (Red Highlight) */
+        .icon-action-btn.playing,
+        .icon-action-btn.active {
             background: var(--primary-color);
             border-color: var(--primary-color);
+            color: white;
             box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4);
         }
 
@@ -439,11 +445,17 @@
             animation: pulse-glow 2s infinite;
             background: linear-gradient(45deg, #ff2a5f, #ff758f);
             border: none;
+            color: white;
+        }
+
+        .icon-action-btn.pulse-btn.active {
+            background: var(--primary-color);
+            animation: none;
         }
 
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(255, 42, 95, 0); }
+            70% { box-shadow: 0 0 0 14px rgba(255, 42, 95, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
         }
 
@@ -618,7 +630,7 @@
             </div>
         </div>
 
-        <!-- Modern Icon Action Bar (Replacing Vinyl & Rectangle Buttons) -->
+        <!-- Modern Icon Action Bar -->
         <div class="action-bar">
             <!-- Music Toggle Button -->
             <button id="music-button" class="icon-action-btn" title="Play/Pause Song">🎵</button>
@@ -704,7 +716,6 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
         
-            // Pure Red Heart Emojis (Small, Medium, Large sizes handled below)
             const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
         
             const heartInterval = setInterval(() => {
@@ -712,15 +723,14 @@
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
                 
-                // Size logic: Small (15-28px), Medium (30-50px), Large (55-85px)
                 const sizeCategory = Math.random();
                 let randomSize;
                 if (sizeCategory < 0.4) {
-                    randomSize = Math.floor(Math.random() * 14) + 15;  // Small
+                    randomSize = Math.floor(Math.random() * 14) + 15;
                 } else if (sizeCategory < 0.8) {
-                    randomSize = Math.floor(Math.random() * 21) + 30;  // Medium
+                    randomSize = Math.floor(Math.random() * 21) + 30;
                 } else {
-                    randomSize = Math.floor(Math.random() * 31) + 55;  // Large
+                    randomSize = Math.floor(Math.random() * 31) + 55;
                 }
         
                 const randomLeft = Math.random() * 95;
@@ -798,11 +808,13 @@
                 if (!isPlaying) {
                     audio.play().then(() => {
                         musicButton.innerText = "⏸";
+                        musicButton.classList.add('playing');
                         isPlaying = true;
                     }).catch(e => console.log("Audio play error:", e));
                 } else {
                     audio.pause();
                     musicButton.innerText = "🎵";
+                    musicButton.classList.remove('playing');
                     isPlaying = false;
                 }
             });
@@ -856,12 +868,12 @@
             setInterval(createHeart, 300);
         });
 
+        // Memory Cards 10-Second Auto-Close Logic
         const flipCards = document.querySelectorAll('.flip-card');
         flipCards.forEach(card => {
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
                 
-                // Sabhi cards ke purane timers rok do aur unhe band kar do
                 flipCards.forEach(c => {
                     c.classList.remove('flipped');
                     if (c.autoCloseTimer) {
@@ -870,11 +882,9 @@
                     }
                 });
         
-                // Agar card pehle se khula nahi tha, toh ab ise kholo
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
                     
-                    // Ab is card par 10 seconds (10000ms) ka timer lagao
                     this.autoCloseTimer = setTimeout(() => {
                         this.classList.remove('flipped');
                         this.autoCloseTimer = null;
@@ -883,16 +893,21 @@
             });
         });
 
+        // Secret Note Toggle Logic with Active Highlight
         function toggleSecretNote() {
             var note = document.getElementById("secretNote");
+            var secretBtn = document.querySelector('.icon-action-btn[title="Open Secret Note"]');
+            
             if (note.style.display === "none" || note.style.display === "") {
                 note.style.display = "block";
+                if (secretBtn) secretBtn.classList.add('active');
             } else {
                 note.style.display = "none";
+                if (secretBtn) secretBtn.classList.remove('active');
             }
         }
 
-        // --- Video Modal & Navigation Logic ---
+        // --- Video Modal & Navigation Logic with Gift Button Highlight ---
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
         const romanticAudio = document.getElementById("romantic-song");
@@ -901,9 +916,14 @@
             videoModal.style.display = "flex";
             history.pushState({ modalOpen: true }, "");
 
+            const giftBtn = document.querySelector('.icon-action-btn.pulse-btn');
+            if (giftBtn) giftBtn.classList.add('active');
+
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
-                document.getElementById('music-button').innerText = "🎵";
+                const musicBtn = document.getElementById('music-button');
+                musicBtn.innerText = "🎵";
+                musicBtn.classList.remove('playing');
             }
 
             popupVideo.pause();
@@ -915,6 +935,9 @@
             popupVideo.pause();
             popupVideo.currentTime = 0;
 
+            const giftBtn = document.querySelector('.icon-action-btn.pulse-btn');
+            if (giftBtn) giftBtn.classList.remove('active');
+
             if (window.history.state && window.history.state.modalOpen) {
                 window.history.back();
             }
@@ -925,6 +948,9 @@
                 videoModal.style.display = "none";
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
+
+                const giftBtn = document.querySelector('.icon-action-btn.pulse-btn');
+                if (giftBtn) giftBtn.classList.remove('active');
             }
         });
     </script>
