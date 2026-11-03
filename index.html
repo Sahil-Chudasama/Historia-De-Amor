@@ -926,9 +926,25 @@
         flipCards.forEach(card => {
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
-                flipCards.forEach(c => c.classList.remove('flipped'));
+                
+                // Sabhi cards ke purane timers rok do aur unhe band kar do
+                flipCards.forEach(c => {
+                    c.classList.remove('flipped');
+                    if (c.autoCloseTimer) {
+                        clearTimeout(c.autoCloseTimer);
+                        c.autoCloseTimer = null;
+                    }
+                });
+        
+                // Agar card pehle se khula nahi tha, toh ab ise kholo
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
+                    
+                    // Ab is card par 10 seconds (10000ms) ka timer lagao
+                    this.autoCloseTimer = setTimeout(() => {
+                        this.classList.remove('flipped');
+                        this.autoCloseTimer = null;
+                    }, 10000);
                 }
             });
         });
