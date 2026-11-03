@@ -401,93 +401,49 @@
             transform: rotateY(180deg);
         }
 
-        .music-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .vinyl-container {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: repeating-radial-gradient(
-                circle,
-                #111,
-                #111 5px,
-                #222 6px,
-                #111 8px
-            );
+        /* --- Modern Icon-Based Action Bar --- */
+        .action-bar {
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 15px rgba(255, 42, 95, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
-            border: 2px solid #ff758f;
-            position: relative;
-        }
-        .vinyl-center {
-            width: 26px;
-            height: 26px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            border: 2px solid white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 11px;
-            box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
-        }
-        .vinyl-center::after {
-            content: "🎵";
-            font-size: 11px;
-        }
-        .spinning {
-            animation: spin 3s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        #music-button {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(255, 42, 95, 0.4);
-            transition: all 0.3s ease;
-        }
-        #music-button:hover {
-            transform: scale(1.05);
-        }
-
-        .video-btn-container {
+            gap: 15px;
             margin-top: 20px;
             margin-bottom: 10px;
         }
-        .birthday-video-btn {
-            display: inline-block;
-            background: linear-gradient(45deg, #ff2a5f, #ff758f);
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(255, 42, 95, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: pulse-glow 2s infinite;
+
+        .icon-action-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid rgba(255, 42, 95, 0.3);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 42, 95, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
         }
-        .birthday-video-btn:hover {
-            transform: scale(1.05);
-            color: #ffffff;
+
+        .icon-action-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4);
         }
+
+        /* Special glow pulse for video surprise button */
+        .icon-action-btn.pulse-btn {
+            animation: pulse-glow 2s infinite;
+            background: linear-gradient(45deg, #ff2a5f, #ff758f);
+            border: none;
+        }
+
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 42, 95, 0); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 42, 95, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); }
         }
 
@@ -551,22 +507,7 @@
             margin-top: 15px;
             margin-bottom: 10px;
         }
-        .envelope-btn {
-            background: linear-gradient(135deg, #ff758f, #ff4d6d);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
-            transition: all 0.3s ease;
-        }
-        .envelope-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.5);
-        }
+        
         .secret-note-box {
             display: none;
             background: rgba(255, 245, 240, 0.45);
@@ -677,23 +618,19 @@
             </div>
         </div>
 
-        <div class="music-section">
-            <div class="vinyl-container" id="vinyl">
-                <div class="vinyl-center"></div>
-            </div>
-            <button id="music-button">Play Your Favourite Song 🎵</button>
-        </div>
-
-        <div class="video-btn-container">
-            <button type="button" class="birthday-video-btn" onclick="openVideoModal()">
-                A Little Surprise For You 🎁
-            </button>
+        <!-- Modern Icon Action Bar (Replacing Vinyl & Rectangle Buttons) -->
+        <div class="action-bar">
+            <!-- Music Toggle Button -->
+            <button id="music-button" class="icon-action-btn" title="Play/Pause Song">🎵</button>
+            
+            <!-- Surprise Video Button -->
+            <button type="button" class="icon-action-btn pulse-btn" onclick="openVideoModal()" title="A Little Surprise For You">🎁</button>
+            
+            <!-- Secret Note Button -->
+            <button class="icon-action-btn" onclick="toggleSecretNote()" title="Open Secret Note">💌</button>
         </div>
 
         <div class="envelope-container">
-            <button class="envelope-btn" onclick="toggleSecretNote()">
-                💌 Tap to Open Secret Note 💌
-            </button>
             <div id="secretNote" class="secret-note-box">
                 <h4>My Dearest Khushu ❤️</h4>
                 <p>
@@ -855,20 +792,17 @@
         document.addEventListener("DOMContentLoaded", function() {
             const audio = document.getElementById('romantic-song');
             const musicButton = document.getElementById('music-button');
-            const vinyl = document.getElementById('vinyl');
             let isPlaying = false;
 
             musicButton.addEventListener('click', function() {
                 if (!isPlaying) {
                     audio.play().then(() => {
-                        vinyl.classList.add('spinning');
-                        musicButton.innerText = "Pause Music ⏸";
+                        musicButton.innerText = "⏸";
                         isPlaying = true;
                     }).catch(e => console.log("Audio play error:", e));
                 } else {
                     audio.pause();
-                    vinyl.classList.remove('spinning');
-                    musicButton.innerText = "Play Your Special Song 🎵";
+                    musicButton.innerText = "🎵";
                     isPlaying = false;
                 }
             });
@@ -969,8 +903,7 @@
 
             if (romanticAudio && !romanticAudio.paused) {
                 romanticAudio.pause();
-                document.getElementById('vinyl').classList.remove('spinning');
-                document.getElementById('music-button').innerText = "Play Your Special Song 🎵";
+                document.getElementById('music-button').innerText = "🎵";
             }
 
             popupVideo.pause();
