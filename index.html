@@ -554,6 +554,7 @@
             align-items: center;
         }
 
+        /* Close Button default (Envelope ke upar) */
         .close-envelope-btn {
             position: absolute;
             top: -35px;
@@ -572,7 +573,7 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
+            transition: transform 0.2s, top 0.4s ease, right 0.4s ease;
         }
         .close-envelope-btn:hover {
             transform: scale(1.1);
@@ -589,6 +590,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: opacity 0.5s ease;
         }
 
         .envelope-hint {
@@ -626,23 +628,24 @@
             z-index: 4;
         }
 
+        /* Letter Paper - No scroll fitting optimization */
         .letter-paper {
             position: absolute;
             bottom: 10px;
-            width: 270px;
+            width: 280px;
             height: 190px;
             background: #fff0f3;
-            border-radius: 8px;
-            padding: 15px 12px;
+            border-radius: 10px;
+            padding: 14px 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            transition: transform 0.8s ease-in-out 0.4s, height 0.8s ease-in-out 0.4s;
+            transition: transform 0.8s ease-in-out 0.4s, width 0.8s ease-in-out 0.4s, height 0.8s ease-in-out 0.4s;
             z-index: 3;
-            overflow-y: auto;
+            overflow: hidden; /* Scroll hatane ke liye */
             font-family: 'Dancing Script', cursive;
-            font-size: 1.25rem;
+            font-size: 1.1rem; /* Perfect font size taaki bina scroll fit ho */
             color: #800f2f;
             text-align: left;
-            line-height: 1.4;
+            line-height: 1.35;
             transform: translateY(0);
         }
 
@@ -652,10 +655,35 @@
             z-index: 1;
         }
 
+        /* Jab envelope open ho, toh pocket aur flap transparent/gayab ho jayein */
+        .envelope.open {
+            background: transparent;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .envelope.open .pocket,
+        .envelope.open .flap {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Paper expand aur center hone ki state */
         .envelope.open .letter-paper {
-            transform: translateY(-135px) scale(1.15);
+            transform: translateY(-160px) scale(1.15);
+            width: 320px;
+            height: 330px;
             z-index: 6;
-            height: 290px;
+            overflow-y: auto; /* Agar choti screen ho toh halka scroll rahe baaki fit ho jaye */
+            padding: 20px 16px;
+        }
+
+        /* Jab paper khul jaye tab close button paper ke top-right corner par shift ho jaye */
+        .envelope.open ~ .close-envelope-btn,
+        .envelope-container-modal.paper-open .close-envelope-btn {
+            top: -15px;
+            right: -5px;
+            z-index: 1015;
         }
 
         @keyframes bounce {
@@ -772,7 +800,7 @@
 
     <!-- Magical Envelope Modal Overlay -->
     <div id="envelopeModal" class="envelope-overlay">
-        <div class="envelope-container-modal">
+        <div class="envelope-container-modal" id="envelopeModalContainer">
             <div class="close-envelope-btn" onclick="closeEnvelopeModal()">&times;</div>
             <div class="envelope" id="envelopeBox" onclick="startEnvelopeAnimation()">
                 <div class="flap"></div>
@@ -1038,10 +1066,14 @@ Sahil 🥰`;
             const modal = document.getElementById("envelopeModal");
             const envelope = document.getElementById("envelopeBox");
             const hint = document.getElementById("envelopeHint");
+            const containerModal = document.getElementById("envelopeModalContainer");
             const typewriterEl = document.getElementById("typewriter-text");
 
             modal.style.display = "flex";
+            history.pushState({ envelopeOpen: true }, ""); // Phone back button support
+
             envelope.classList.remove("open");
+            containerModal.classList.remove("paper-open");
             hint.style.display = "block";
             typewriterEl.innerHTML = "";
             if (typewriterTimeout) clearTimeout(typewriterTimeout);
@@ -1050,21 +1082,29 @@ Sahil 🥰`;
         function closeEnvelopeModal() {
             const modal = document.getElementById("envelopeModal");
             const envelope = document.getElementById("envelopeBox");
+            const containerModal = document.getElementById("envelopeModalContainer");
+
             modal.style.display = "none";
             envelope.classList.remove("open");
+            containerModal.classList.remove("paper-open");
             if (typewriterTimeout) clearTimeout(typewriterTimeout);
+
+            if (window.history.state && window.history.state.envelopeOpen) {
+                window.history.back();
+            }
         }
 
         function startEnvelopeAnimation() {
             const envelope = document.getElementById("envelopeBox");
             const hint = document.getElementById("envelopeHint");
+            const containerModal = document.getElementById("envelopeModalContainer");
 
             if (envelope.classList.contains("open")) return;
 
             envelope.classList.add("open");
+            containerModal.classList.add("paper-open");
             hint.style.display = "none";
 
-            // Paper slide bahar aane ke baad medium speed typewriter start hoga
             typewriterTimeout = setTimeout(() => {
                 startTypewriterEffect();
             }, 800);
@@ -1076,7 +1116,7 @@ Sahil 🥰`;
 
             targetElement.innerHTML = "";
             let i = 0;
-            const speed = 45; // Medium speed (natural writing feel)
+            const speed = 45; // Medium speed
 
             function type() {
                 if (i < fullLetterMessage.length) {
@@ -1124,7 +1164,9 @@ Sahil 🥰`;
             }
         }
 
+        // Unified Phone Back Button (`popstate`) Listener for both Modals
         window.addEventListener('popstate', function(event) {
+            // Video Modal Close Check
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 popupVideo.pause();
@@ -1132,6 +1174,17 @@ Sahil 🥰`;
 
                 const giftBtn = document.querySelector('.icon-action-btn.pulse-btn');
                 if (giftBtn) giftBtn.classList.remove('active');
+            }
+
+            // Envelope Modal Close Check
+            const envelopeModal = document.getElementById("envelopeModal");
+            const envelope = document.getElementById("envelopeBox");
+            const containerModal = document.getElementById("envelopeModalContainer");
+            if (envelopeModal.style.display === "flex") {
+                envelopeModal.style.display = "none";
+                envelope.classList.remove("open");
+                containerModal.classList.remove("paper-open");
+                if (typewriterTimeout) clearTimeout(typewriterTimeout);
             }
         });
     </script>
