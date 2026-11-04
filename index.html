@@ -286,19 +286,19 @@
         }
         
         .signature-name {
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-            font-weight: 600;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: #ff2a5f; /* Agar aur dark chahiye toh #800f2f bhi kar sakte ho */
+            font-weight: 700;
             text-align: right;
             margin-top: -4px;
             padding-right: 15px;
         }
 
         .subtitle-text {
-            font-size: 1.05rem;
-            color: #ff6b8b;
-            font-weight: 600;
+            font-size: 1.1rem;
+            color: #ff1e4d; /* Isse color aur zyada dark aur vibrant ho jayega */
+            font-weight: 700;
             margin-bottom: 15px;
             letter-spacing: 0.5px;
             text-align: center;
@@ -882,12 +882,12 @@
                 const heart = document.createElement("div");
                 const symbols = ["❤️", "❤️", "🩷", "🩷", "💕", "💕"];
                 const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-                const duration = Math.random() * 4 + 6;
+                const duration = Math.random() * 6 + 9;
 
                 heart.className = "heart";
                 heart.innerHTML = randomSymbol;
                 heart.style.setProperty('--duration', duration + 's');
-                heart.style.setProperty('--size', (Math.random() * 10 + 14) + 'px');
+                heart.style.setProperty('--size', (Math.random() * 6 + 10) + 'px');
                 heart.style.left = Math.random() * 100 + "vw";
 
                 document.body.appendChild(heart);
