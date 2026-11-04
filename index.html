@@ -566,9 +566,9 @@
         }
 
         .heart {
-            position: fixed;
+            position: absolute;
             z-index: 999;
-            bottom: -50px;
+            bottom: 0px;
             color: var(--secondary-color);
             animation: floatUp var(--duration) linear infinite;
             font-size: var(--size);
@@ -869,7 +869,7 @@
 
             function createHeart() {
                 const heart = document.createElement("div");
-                const symbols = ["❤️", "🩷", "🩷", "🌸", "💕"];
+                const symbols = ["❤️", "❤️", "❤️", "❤️", "💕"];
                 const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                 const duration = Math.random() * 4 + 5;
 
@@ -880,7 +880,7 @@
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.zIndex = "999";
 
-                document.body.appendChild(heart);
+                card.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
             setInterval(createHeart, 300);
