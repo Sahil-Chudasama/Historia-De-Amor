@@ -576,18 +576,18 @@
         }
         @keyframes floatUp {
             0% { 
-                transform: translateY(105vh) rotate(0deg); 
+                transform: translateY(110vh) rotate(0deg); 
                 opacity: 0; 
             }
             10% { 
                 opacity: 1; 
             }
-            85% { 
-                opacity: 0.95; 
+            90% { 
+                opacity: 1; /* Bilkul top ke paas tak full opacity rahegi */
             }
             100% { 
                 transform: translateY(-15vh) rotate(360deg); 
-                opacity: 0; 
+                opacity: 0; /* Screen se bahar nikalne ke baad hi fade hoga */
             }
         }
     </style>
@@ -880,14 +880,14 @@
 
             function createHeart() {
                 const heart = document.createElement("div");
-                const symbols = ["❤️", "❤️", "🩷", "🌸", "💕", "💕"];
+                const symbols = ["❤️", "❤️", "🩷", "🩷", "💕", "💕"];
                 const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                 const duration = Math.random() * 4 + 5;
 
                 heart.className = "heart";
                 heart.innerHTML = randomSymbol;
                 heart.style.setProperty('--duration', duration + 's');
-                heart.style.setProperty('--size', (Math.random() * 12 + 22) + 'px');
+                heart.style.setProperty('--size', (Math.random() * 10 + 14) + 'px');
                 heart.style.left = Math.random() * 100 + "vw";
 
                 document.body.appendChild(heart);
