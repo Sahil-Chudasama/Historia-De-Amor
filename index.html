@@ -868,6 +868,9 @@
             updateTimer();
 
             function createHeart() {
+                const card = document.querySelector('.content-box'); // Yeh line add karni hai
+                if (!card) return; // Safety check
+
                 const heart = document.createElement("div");
                 const symbols = ["❤️", "❤️", "❤️", "❤️", "💕"];
                 const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
@@ -877,14 +880,13 @@
                 heart.innerHTML = randomSymbol;
                 heart.style.setProperty('--duration', duration + 's');
                 heart.style.setProperty('--size', (Math.random() * 10 + 16) + 'px');
-                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.left = Math.random() * (card.offsetWidth - 30) + "px"; // Card ki width ke andar random position
                 heart.style.zIndex = "999";
 
                 card.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
             }
             setInterval(createHeart, 300);
-        });
 
         // Memory Cards 10-Second Auto-Close Logic
         const flipCards = document.querySelectorAll('.flip-card');
