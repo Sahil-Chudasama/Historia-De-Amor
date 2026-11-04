@@ -707,8 +707,7 @@
                     audioBtn.classList.add("playing");
                 }).catch(e => console.log("Audio play blocked:", e));
             } else {
-                suspenseAudio.pause();
-                suspenseAudio.currentTime = 0; 
+                suspenseAudio.pause(); 
                 audioBtn.innerText = "Play Music 🎧";
                 audioBtn.classList.remove("playing");
             }
@@ -728,7 +727,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
         
-            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
+            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
         
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -759,7 +758,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 15);
+            }, 10);
         
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -771,7 +770,7 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 2000);
+            }, 2500);
         }
 
         function checkEmoji() {
