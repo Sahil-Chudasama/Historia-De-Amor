@@ -703,7 +703,7 @@
         function startSuspenseAudio() {
             if (suspenseAudio.paused) {
                 suspenseAudio.play().then(() => {
-                    audioBtn.innerText = "Stop Music ⏹️";
+                    audioBtn.innerText = "Pause Music ⏹️";
                     audioBtn.classList.add("playing");
                 }).catch(e => console.log("Audio play blocked:", e));
             } else {
