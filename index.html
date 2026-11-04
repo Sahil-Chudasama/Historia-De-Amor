@@ -567,12 +567,13 @@
 
         .heart {
             position: fixed;
+            z-index: 999;
+            bottom: -50px;
             color: var(--secondary-color);
             animation: floatUp var(--duration) linear infinite;
             font-size: var(--size);
             opacity: 0.8;
             pointer-events: none;
-            z-index: 0;
         }
         @keyframes floatUp {
             0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
@@ -732,7 +733,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
         
-            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
+            const heartTypes = ["🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
         
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -868,7 +869,7 @@
 
             function createHeart() {
                 const heart = document.createElement("div");
-                const symbols = ["❤️", "💖", "✨", "🌸", "💕"];
+                const symbols = ["❤️", "🩷", "🩷", "🌸", "💕"];
                 const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
                 const duration = Math.random() * 4 + 5;
 
@@ -877,6 +878,7 @@
                 heart.style.setProperty('--duration', duration + 's');
                 heart.style.setProperty('--size', (Math.random() * 10 + 16) + 'px');
                 heart.style.left = Math.random() * 100 + "vw";
+                heart.style.zIndex = "999";
 
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), duration * 1000);
