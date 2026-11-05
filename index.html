@@ -731,6 +731,47 @@
                 opacity: 0; 
             }
         }
+
+        /* --- Envelope Seal Styling --- */
+        .envelope-seal {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        
+        .seal-heart {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            animation: pulse-heart 1.5s infinite;
+        }
+        
+        .seal-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: #800f2f;
+            font-weight: 700;
+            margin-top: -5px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        
+        /* Jab envelope open ho toh seal gayab ho jaye */
+        .envelope.open .envelope-seal {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
     </style>
 </head>
 <body>
@@ -826,8 +867,13 @@
                     </div>
                 </div>
                 <div class="pocket"></div>
+                <!-- Naya Envelope Seal (Heart aur Khushi) -->
+                <div class="envelope-seal">
+                    <span class="seal-heart">❤️</span>
+                    <span class="seal-name">Khushi</span>
+                </div>
             </div>
-            <div class="envelope-hint" id="envelopeHint">Tap to Open 💌</div>
+            <div class="envelope-hint" id="envelopeHint">Tap to Open</div>
         </div>
     </div>
 
