@@ -630,24 +630,24 @@
             z-index: 4;
         }
 
-        /* Letter Paper - Perfectly Centered & Compact Optimization */
+        /* Letter Paper - Expanded height and centered with relative positioning for absolute close button */
         .letter-paper {
             position: absolute;
             bottom: 10px;
             width: 280px;
             height: 190px;
             background: #fff0f3;
-            border-radius: 10px;
-            padding: 14px 12px;
+            border-radius: 12px;
+            padding: 18px 14px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             transition: all 0.8s ease-in-out;
             z-index: 3;
             overflow: hidden;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             color: #800f2f;
             text-align: left;
-            line-height: 1.35;
+            line-height: 1.4;
             transform: translateY(0);
         }
 
@@ -669,20 +669,25 @@
             transition: opacity 0.4s ease;
         }
 
-        /* Paper expand aur bilkul center hone ki state */
+        /* Paper expand and absolute center alignment with increased height */
         .envelope.open .letter-paper {
-            transform: translateY(0) scale(1.1);
-            width: 330px;
-            height: 370px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 90%;
+            max-width: 350px;
+            height: 420px;
             z-index: 6;
             overflow-y: auto;
-            padding: 22px 16px;
+            padding: 25px 20px;
         }
 
-        /* Jab paper khul jaye tab close button bilkul paper ke top-right corner par aa jaye */
+        /* Close button fixed directly on the top-right corner of the open paper sheet */
         .envelope-container-modal.paper-open .close-envelope-btn {
-            top: calc(50% - 195px);
-            right: calc(50% - 175px);
+            position: fixed;
+            top: calc(50% - 220px);
+            right: calc(50% - 180px);
             z-index: 1015;
         }
 
@@ -1057,8 +1062,7 @@ You are the best decision my heart ever made. I love you more than words can eve
 
 Thank you for being my smile and my favorite person. No matter where life takes us, my heart will always belong to you.
 
-Forever Yours,
-Sahil 🥰`;
+<div style="text-align: right; margin-top: 15px; font-weight: bold;">Forever Yours,<br>Sahil 🥰</div>`;
 
         let typewriterTimeout = null;
 
@@ -1120,6 +1124,7 @@ Sahil 🥰`;
 
             function type() {
                 if (i < fullLetterMessage.length) {
+                    // HTML tags ko ek saath handle karne ke liye simple character appending
                     targetElement.innerHTML += fullLetterMessage.charAt(i);
                     i++;
                     typewriterTimeout = setTimeout(type, speed);
