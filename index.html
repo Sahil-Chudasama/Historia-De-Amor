@@ -46,7 +46,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 8vh;
+            padding-top: 8vh;       
             padding-left: 20px;
             padding-right: 20px;
             transition: opacity 0.8s ease, visibility 0.8s ease;
@@ -283,7 +283,7 @@
             line-height: 1.1;
             text-align: center;
         }
-
+        
         .signature-name {
             font-family: 'Dancing Script', cursive;
             font-size: 1.3rem;
@@ -459,16 +459,16 @@
         }
 
         @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.6);
+            0% { 
+                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0.6); 
                 border-color: rgba(255, 42, 95, 0.8);
             }
-            70% {
-                box-shadow: 0 0 0 12px rgba(255, 42, 95, 0);
+            70% { 
+                box-shadow: 0 0 0 12px rgba(255, 42, 95, 0); 
                 border-color: rgba(255, 42, 95, 0.3);
             }
-            100% {
-                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0);
+            100% { 
+                box-shadow: 0 0 0 0 rgba(255, 42, 95, 0); 
                 border-color: rgba(255, 42, 95, 0.4);
             }
         }
@@ -530,7 +530,7 @@
             background: #e01e4f;
         }
 
-        /* --- Magical Envelope Overlay & Animation Styling --- */
+        /* --- Magical Envelope Overlay & Centered Animation --- */
         .envelope-overlay {
             position: fixed;
             top: 0;
@@ -549,16 +549,18 @@
             position: relative;
             width: 90%;
             max-width: 340px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
 
         /* Close Button default (Envelope ke upar) */
         .close-envelope-btn {
             position: absolute;
-            top: -35px;
-            right: 0px;
+            top: calc(50% - 120px);
+            right: 15px;
             background: #ff2a5f;
             color: white;
             border: 2px solid white;
@@ -573,7 +575,7 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transition: transform 0.2s, top 0.4s ease, right 0.4s ease;
+            transition: all 0.4s ease;
         }
         .close-envelope-btn:hover {
             transform: scale(1.1);
@@ -628,7 +630,7 @@
             z-index: 4;
         }
 
-        /* Letter Paper - No scroll fitting optimization */
+        /* Letter Paper - Perfectly Centered & Compact Optimization */
         .letter-paper {
             position: absolute;
             bottom: 10px;
@@ -636,13 +638,13 @@
             height: 190px;
             background: #fff0f3;
             border-radius: 10px;
-            padding: 14px 10px;
+            padding: 14px 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            transition: transform 0.8s ease-in-out 0.4s, width 0.8s ease-in-out 0.4s, height 0.8s ease-in-out 0.4s;
+            transition: all 0.8s ease-in-out;
             z-index: 3;
-            overflow: hidden; /* Scroll hatane ke liye */
+            overflow: hidden;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.1rem; /* Perfect font size taaki bina scroll fit ho */
+            font-size: 1.05rem;
             color: #800f2f;
             text-align: left;
             line-height: 1.35;
@@ -655,7 +657,6 @@
             z-index: 1;
         }
 
-        /* Jab envelope open ho, toh pocket aur flap transparent/gayab ho jayein */
         .envelope.open {
             background: transparent;
             box-shadow: none;
@@ -668,21 +669,20 @@
             transition: opacity 0.4s ease;
         }
 
-        /* Paper expand aur center hone ki state */
+        /* Paper expand aur bilkul center hone ki state */
         .envelope.open .letter-paper {
-            transform: translateY(-160px) scale(1.15);
-            width: 320px;
-            height: 330px;
+            transform: translateY(0) scale(1.1);
+            width: 330px;
+            height: 370px;
             z-index: 6;
-            overflow-y: auto; /* Agar choti screen ho toh halka scroll rahe baaki fit ho jaye */
-            padding: 20px 16px;
+            overflow-y: auto;
+            padding: 22px 16px;
         }
 
-        /* Jab paper khul jaye tab close button paper ke top-right corner par shift ho jaye */
-        .envelope.open ~ .close-envelope-btn,
+        /* Jab paper khul jaye tab close button bilkul paper ke top-right corner par aa jaye */
         .envelope-container-modal.paper-open .close-envelope-btn {
-            top: -15px;
-            right: -5px;
+            top: calc(50% - 195px);
+            right: calc(50% - 175px);
             z-index: 1015;
         }
 
@@ -701,19 +701,19 @@
             z-index: 10;
         }
         @keyframes floatUp {
-            0% {
-                transform: translateY(100vh);
-                opacity: 0;
+            0% { 
+                transform: translateY(100vh); 
+                opacity: 0; 
             }
-            15% {
-                opacity: 1;
+            15% { 
+                opacity: 1; 
             }
-            85% {
-                opacity: 1;
+            85% { 
+                opacity: 1; 
             }
-            100% {
-                transform: translateY(-120vh);
-                opacity: 0;
+            100% { 
+                transform: translateY(-120vh); 
+                opacity: 0; 
             }
         }
     </style>
@@ -756,7 +756,7 @@
                 <div class="time-unit"><span id="seconds">0</span><span>Secs</span></div>
             </div>
         </div>
-
+        
         <div class="gallery-title">Tap Cards to Reveal Memories </div>
         <div class="cards-grid">
             <div class="flip-card">
@@ -789,10 +789,10 @@
         <div class="action-bar">
             <!-- Music Toggle Button -->
             <button id="music-button" class="icon-action-btn" title="Play/Pause Song">🎵</button>
-
+            
             <!-- Surprise Video Button -->
             <button type="button" class="icon-action-btn pulse-btn" onclick="openVideoModal()" title="A Little Surprise For You">🎁</button>
-
+            
             <!-- Secret Envelope Letter Button -->
             <button class="icon-action-btn" onclick="openEnvelopeModal()" title="Open Love Letter">💌</button>
         </div>
@@ -853,7 +853,7 @@
                     audioBtn.classList.add("playing");
                 }).catch(e => console.log("Audio play blocked:", e));
             } else {
-                suspenseAudio.pause();
+                suspenseAudio.pause(); 
                 audioBtn.innerText = "Play Music 🎧";
                 audioBtn.classList.remove("playing");
             }
@@ -872,14 +872,14 @@
             overlay.style.backdropFilter = "blur(10px)";
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
-
+        
             const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
-
+        
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-
+                
                 const sizeCategory = Math.random();
                 let randomSize;
                 if (sizeCategory < 0.4) {
@@ -889,30 +889,30 @@
                 } else {
                     randomSize = Math.floor(Math.random() * 31) + 55;
                 }
-
+        
                 const randomLeft = Math.random() * 95;
                 const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
                 const randomRotation = (Math.random() * 60 - 30) + "deg";
-
+        
                 heart.style.left = randomLeft + "vw";
                 heart.style.setProperty('--size', randomSize + "px");
                 heart.style.setProperty('--duration', randomDuration + "s");
                 heart.style.setProperty('--rotation', randomRotation);
-
+        
                 overlay.appendChild(heart);
-
+        
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
             }, 10);
-
+        
             setTimeout(() => {
                 clearInterval(heartInterval);
                 overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
                 overlay.style.opacity = "0";
                 overlay.style.backdropFilter = "blur(0px)";
                 overlay.style.webkitBackdropFilter = "blur(0px)";
-
+        
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
@@ -945,7 +945,7 @@
             } else {
                 lockMsg.className = "lock-message error";
                 lockMsg.innerHTML = `Hahaha.. Think Again.. <span style="font-size: 1.6rem; display: inline-block;">😏</span>`;
-
+                
                 emojiInput.classList.remove("shake");
                 void emojiInput.offsetWidth;
                 emojiInput.classList.add("shake");
@@ -979,11 +979,11 @@
             const startDate = new Date("2025-07-31T18:30:00");
             function updateTimer() {
                 const now = new Date();
-
+                
                 let years = now.getFullYear() - startDate.getFullYear();
                 let months = now.getMonth() - startDate.getMonth();
                 let days = now.getDate() - startDate.getDate();
-
+                
                 if (days < 0) {
                     months--;
                     const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
@@ -1030,7 +1030,7 @@
         flipCards.forEach(card => {
             card.addEventListener('click', function() {
                 const isAlreadyFlipped = this.classList.contains('flipped');
-
+                
                 flipCards.forEach(c => {
                     c.classList.remove('flipped');
                     if (c.autoCloseTimer) {
@@ -1038,10 +1038,10 @@
                         c.autoCloseTimer = null;
                     }
                 });
-
+        
                 if (!isAlreadyFlipped) {
                     this.classList.add('flipped');
-
+                    
                     this.autoCloseTimer = setTimeout(() => {
                         this.classList.remove('flipped');
                         this.autoCloseTimer = null;
@@ -1070,7 +1070,7 @@ Sahil 🥰`;
             const typewriterEl = document.getElementById("typewriter-text");
 
             modal.style.display = "flex";
-            history.pushState({ envelopeOpen: true }, ""); // Phone back button support
+            history.pushState({ envelopeOpen: true }, "");
 
             envelope.classList.remove("open");
             containerModal.classList.remove("paper-open");
@@ -1164,9 +1164,8 @@ Sahil 🥰`;
             }
         }
 
-        // Unified Phone Back Button (`popstate`) Listener for both Modals
+        // Unified Phone Back Button (`popstate`) Listener
         window.addEventListener('popstate', function(event) {
-            // Video Modal Close Check
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
                 popupVideo.pause();
@@ -1176,7 +1175,6 @@ Sahil 🥰`;
                 if (giftBtn) giftBtn.classList.remove('active');
             }
 
-            // Envelope Modal Close Check
             const envelopeModal = document.getElementById("envelopeModal");
             const envelope = document.getElementById("envelopeBox");
             const containerModal = document.getElementById("envelopeModalContainer");
