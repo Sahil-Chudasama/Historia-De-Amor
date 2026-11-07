@@ -304,16 +304,31 @@
             text-align: center;
         }
 
+        /* --- Neon / Glow Pulse Border Counter Box --- */
         .counter-box {
-            background: rgba(255, 255, 255, 0.45);
-            border: 2px solid rgba(255, 42, 95, 0.4);
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid rgba(255, 42, 95, 0.6);
             border-radius: 20px;
             padding: 14px 6px;
             margin: 15px 0;
-            box-shadow: 0 8px 25px rgba(255, 42, 95, 0.2);
             backdrop-filter: blur(8px);
             width: 100%;
+            position: relative;
+            /* Neon Glow Pulse Animation */
+            animation: neonGlowPulse 2.5s infinite ease-in-out;
         }
+
+        @keyframes neonGlowPulse {
+            0%, 100% {
+                box-shadow: 0 8px 25px rgba(255, 42, 95, 0.2), 0 0 5px rgba(255, 42, 95, 0.3);
+                border-color: rgba(255, 42, 95, 0.5);
+            }
+            50% {
+                box-shadow: 0 12px 35px rgba(255, 42, 95, 0.45), 0 0 15px rgba(255, 42, 95, 0.7);
+                border-color: rgba(255, 42, 95, 1);
+            }
+        }
+
         .counter-title {
             font-size: 0.85rem;
             color: var(--primary-color);
@@ -321,12 +336,14 @@
             margin-bottom: 10px;
             letter-spacing: 0.5px;
         }
+
         .timer {
             display: flex;
             justify-content: center;
             gap: 4px;
             width: 100%;
         }
+
         .time-unit {
             background: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
@@ -337,6 +354,7 @@
             border: 1px solid rgba(255, 117, 143, 0.3);
             position: relative;
         }
+
         .time-unit span:first-child {
             font-size: 1.15rem;
             font-weight: 700;
@@ -344,6 +362,7 @@
             display: block;
             line-height: 1.2;
         }
+
         .time-unit span:last-child {
             font-size: 0.6rem;
             color: #555;
@@ -351,6 +370,16 @@
             text-transform: uppercase;
         }
 
+        /* Live Tick Animation for Seconds */
+        @keyframes tickPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); color: #ff0040; }
+            100% { transform: scale(1); }
+        }
+
+        .tick-animation {
+            animation: tickPop 0.4s ease-in-out;
+        }
         /* --- Enhanced 3D Memory Stack Preview --- */
         .memory-stack-preview-container {
             display: flex;
@@ -1497,6 +1526,8 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const startDate = new Date("2025-07-31T18:30:00");
+            let oldSeconds = -1; // Seconds track karne ke liye
+
             function updateTimer() {
                 const now = new Date();
 
@@ -1522,7 +1553,17 @@
                 document.getElementById("months").innerText = months;
                 document.getElementById("hours").innerText = hours;
                 document.getElementById("minutes").innerText = minutes;
-                document.getElementById("seconds").innerText = seconds;
+
+                const secElement = document.getElementById("seconds");
+                secElement.innerText = seconds;
+
+                // Jaise hi naya second badlega, tick animation trigger hogi
+                if (seconds !== oldSeconds) {
+                    secElement.classList.remove("tick-animation");
+                    void secElement.offsetWidth; // Trigger reflow for animation restart
+                    secElement.classList.add("tick-animation");
+                    oldSeconds = seconds;
+                }
             }
             setInterval(updateTimer, 1000);
             updateTimer();
