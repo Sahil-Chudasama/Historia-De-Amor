@@ -1229,7 +1229,7 @@
                         <h3 id="modalCardTitle">Memory 1</h3>
                     </div>
                     <div class="card-back">
-                        <h3 id="modalCardText">Whenever I looked at you and you would blush 👀✨</h3>
+                        <h3 id="modalCardText">Whenever I looked at you and you would blush 👀</h3>
                     </div>
                 </div>
             </div>
@@ -1603,6 +1603,14 @@
             {
                 title: "Memory 4",
                 text: "Whenever you get cute-angry at me \"😤😤\""
+            },
+            {
+                title: "Memory 5",
+                text: "When I held your hand for the first time 🤝 ☺️"
+            },
+            {
+                title: "Memory 6",
+                text: "That day when we talked until 3 AM in the night 🌙"
             }
         ];
 
@@ -1664,8 +1672,8 @@
                     } else {
                         memoryState = "end";
                         card.className = "modal-card-wrapper fade-in-card";
-                        document.getElementById("modalCardTitle").innerText = "To Be Continued...";
                         document.getElementById("modalCardTitle").innerText = "More memories loading in the future... ❤️";
+                        document.getElementById("modalCardText").innerText = "More memories loading in the future... ❤️";
                         indicator.style.display = "none";
                     }
                 }, 400);
@@ -1749,7 +1757,7 @@
 
             videoModalEl.style.display = "none";
             videoEl.pause();
-            videoEl.currentTime = 0;
+            videoEl.currentTime, 0;
 
             if (window.history.state && window.history.state.musicVideoOpen) {
                 window.history.back();
