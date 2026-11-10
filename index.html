@@ -1324,10 +1324,9 @@
 
     <!-- Direct Movie Song Video Selection Modal (Opened when "Watch" is selected) -->
     <div id="musicVideoModal" class="video-modal">
-        <div class="video-modal-content video-box-container">
+    <div class="video-modal-content video-box-container">
             <div class="close-modal-btn" onclick="closeMusicVideoModal()">&times;</div>
-            <video id="musicSelectionVideo" controls controlsList="nodownload" playsinline preload="metadata">
-                <source src="raw/Movie_Song.mp4" type="video/mp4">
+            <video id="musicSelectionVideo" controls controlsList="nodownload" playsinline preload="none">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -1467,8 +1466,7 @@
     <div id="videoModal" class="video-modal">
         <div class="video-modal-content video-box-container">
             <div class="close-modal-btn" onclick="closeVideoModal()">&times;</div>
-            <video id="popupVideo" controls controlsList="nodownload" playsinline preload="metadata">
-                <source src="raw/Gift_Video.mp4" type="video/mp4">
+            <video id="popupVideo" controls controlsList="nodownload" playsinline preload="none">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -1847,6 +1845,12 @@
             const videoModalEl = document.getElementById("musicVideoModal");
             const videoEl = document.getElementById("musicSelectionVideo");
 
+            // Yeh check karega ki jab user click kare tabhi net use ho
+            if (!videoEl.getAttribute('src')) {
+                videoEl.src = "raw/Movie_Song.mp4";
+                videoEl.load();
+            }
+
             videoModalEl.style.display = "flex";
             history.pushState({ musicVideoOpen: true }, "");
 
@@ -2116,6 +2120,13 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             setTimeout(() => {
                 giftOverlay.style.display = "none";
                 videoModal.style.display = "flex";
+
+                // Yeh check karega ki jab gift khule tabhi net use ho
+                if (!popupVideo.getAttribute('src')) {
+                    popupVideo.src = "raw/Gift_Video.mp4";
+                    popupVideo.load();
+                }
+
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
             }, 1000);
