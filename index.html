@@ -1473,8 +1473,8 @@
     </div>
 
     <!-- Audio Elements -->
-    <audio id="suspense-song" src="raw/Cheri_Cheri_Lady.mp3" loop preload="auto"></audio>
-    <audio id="romantic-song" src="raw/Romantic_Song.mp3" loop preload="auto"></audio>
+    <audio id="suspense-song" loop preload="none"></audio>
+    <audio id="romantic-song" loop preload="none"></audio>
 
     <script>
         // --- Lock Screen Logic ---
@@ -1495,6 +1495,11 @@
         });
 
         function startSuspenseAudio() {
+            if (!suspenseAudio.getAttribute('src')) {
+                suspenseAudio.src = "raw/Cheri_Cheri_Lady.mp3";
+                suspenseAudio.load();
+            }
+
             if (suspenseAudio.paused) {
                 suspenseAudio.play().then(() => {
                     audioBtn.innerText = "Pause Music ⏹️";
@@ -1540,7 +1545,7 @@
             overlay.style.webkitBackdropFilter = "blur(10px)";
             overlay.innerHTML = "";
 
-            const heartTypes = [ "🩷", "🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷","🩷"];
+            const heartTypes = ["🩷", "🩷", "🩷","🩷","🩷", "🩷", "🩷"];
 
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -1571,19 +1576,21 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 10);
+            }, 35);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
-                overlay.style.transition = "opacity 0.6s ease, backdrop-filter 0.6s ease";
+
+                // Heavy backdrop-filter transition hata kar sirf opacity transition rakhi hai taaki lag khatam ho jaye
+                overlay.style.transition = "opacity 0.6s ease";
                 overlay.style.opacity = "0";
-                overlay.style.backdropFilter = "blur(0px)";
-                overlay.style.webkitBackdropFilter = "blur(0px)";
 
                 setTimeout(() => {
                     overlay.style.display = "none";
+                    overlay.style.backdropFilter = "none";
+                    overlay.style.webkitBackdropFilter = "none";
                 }, 600);
-            }, 2500);
+            }, 2200);
         }
 
         function checkEmoji() {
@@ -1832,6 +1839,13 @@
 
         function chooseListenOption() {
             closeMusicChoiceModal();
+
+            // Jab user click karega tabhi romantic song load hoga
+            if (!romanticAudio.getAttribute('src')) {
+                romanticAudio.src = "raw/Romantic_Song.mp3";
+                romanticAudio.load();
+            }
+
             romanticAudio.play().then(() => {
                 const musicBtn = document.getElementById('music-button');
                 const iconSpan = document.getElementById('music-icon-span');
