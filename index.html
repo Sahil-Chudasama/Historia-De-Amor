@@ -50,6 +50,7 @@
             padding-left: 20px;
             padding-right: 20px;
             transition: opacity 0.8s ease, visibility 0.8s ease;
+            will-change: opacity, visibility;
         }
 
         .lock-card {
@@ -272,6 +273,7 @@
             animation: blastFlyUp var(--duration) ease-out forwards;
             font-size: var(--size);
             user-select: none;
+            will-change: transform, opacity;
         }
 
         @keyframes blastFlyUp {
@@ -704,6 +706,7 @@
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(8px);
+            will-change: transform, opacity;
         }
         .video-modal-content {
             position: relative;
@@ -839,6 +842,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            will-change: transform, opacity;
         }
 
         .gift-overlay-content {
@@ -1541,30 +1545,34 @@
             const overlay = document.getElementById("heart-overlay");
             overlay.style.display = "block";
             overlay.style.opacity = "1";
-            overlay.style.backdropFilter = "blur(10px)";
-            overlay.style.webkitBackdropFilter = "blur(10px)";
+            overlay.style.backdropFilter = "blur(6px)";
+            overlay.style.webkitBackdropFilter = "blur(6px)";
             overlay.innerHTML = "";
 
-            const heartTypes = ["🩷", "🩷", "🩷","🩷","🩷", "🩷", "🩷"];
+            const heartTypes = ["🩷","🩷","🩷","🩷","🩷"];
 
+            // Har 15 milliseconds mein hearts generate honge taaki screen par bharmaar ho jaye
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
+                // GPU acceleration add kiya hai taaki kitne bhi hearts ho, lag bilkul na aaye
+                heart.style.willChange = "transform, opacity";
+
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
 
                 const sizeCategory = Math.random();
                 let randomSize;
                 if (sizeCategory < 0.4) {
-                    randomSize = Math.floor(Math.random() * 14) + 15;
+                    randomSize = Math.floor(Math.random() * 16) + 18; // Chote hearts
                 } else if (sizeCategory < 0.8) {
-                    randomSize = Math.floor(Math.random() * 21) + 30;
+                    randomSize = Math.floor(Math.random() * 25) + 35; // Medium hearts
                 } else {
-                    randomSize = Math.floor(Math.random() * 31) + 55;
+                    randomSize = Math.floor(Math.random() * 35 + 50); // Bade aur pyaare hearts
                 }
 
-                const randomLeft = Math.random() * 95;
-                const randomDuration = (Math.random() * 0.6 + 0.8).toFixed(2);
-                const randomRotation = (Math.random() * 60 - 30) + "deg";
+                const randomLeft = Math.random() * 96; // Pure screen par failne ke liye
+                const randomDuration = (Math.random() * 1.2 + 1.6).toFixed(2);
+                const randomRotation = (Math.random() * 90 - 45) + "deg";
 
                 heart.style.left = randomLeft + "vw";
                 heart.style.setProperty('--size', randomSize + "px");
@@ -1573,24 +1581,25 @@
 
                 overlay.appendChild(heart);
 
+                // Animation khatam hote hi DOM clean ho jayega
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 35);
+            }, 15); // Fast rate taaki dher saare hearts aayein
 
+            // Total 2.5 seconds tak blast chalega, phir smooth fade out ho jayega
             setTimeout(() => {
                 clearInterval(heartInterval);
 
-                // Heavy backdrop-filter transition hata kar sirf opacity transition rakhi hai taaki lag khatam ho jaye
-                overlay.style.transition = "opacity 0.6s ease";
+                overlay.style.transition = "opacity 0.8s ease";
                 overlay.style.opacity = "0";
 
                 setTimeout(() => {
                     overlay.style.display = "none";
                     overlay.style.backdropFilter = "none";
                     overlay.style.webkitBackdropFilter = "none";
-                }, 600);
-            }, 2200);
+                }, 800);
+            }, 3000);
         }
 
         function checkEmoji() {
