@@ -1545,33 +1545,31 @@
             const overlay = document.getElementById("heart-overlay");
             overlay.style.display = "block";
             overlay.style.opacity = "1";
-            overlay.style.backdropFilter = "blur(6px)";
-            overlay.style.webkitBackdropFilter = "blur(6px)";
+            // Backdrop-filter blur yahan se hata diya hai taaki GPU par load na pade aur lag 100% khatam ho jaye
             overlay.innerHTML = "";
 
             const heartTypes = ["🩷","🩷","🩷","🩷","🩷"];
 
-            // Har 15 milliseconds mein hearts generate honge taaki screen par bharmaar ho jaye
+            // Interval ko 25ms kar diya hai taaki elements ka count balanced rahe aur makkhan chale
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
-                // GPU acceleration add kiya hai taaki kitne bhi hearts ho, lag bilkul na aaye
                 heart.style.willChange = "transform, opacity";
-
+                
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
 
                 const sizeCategory = Math.random();
                 let randomSize;
                 if (sizeCategory < 0.4) {
-                    randomSize = Math.floor(Math.random() * 16) + 18; // Chote hearts
+                    randomSize = Math.floor(Math.random() * 16) + 18;
                 } else if (sizeCategory < 0.8) {
-                    randomSize = Math.floor(Math.random() * 25) + 35; // Medium hearts
+                    randomSize = Math.floor(Math.random() * 25) + 35;
                 } else {
-                    randomSize = Math.floor(Math.random() * 35 + 50); // Bade aur pyaare hearts
+                    randomSize = Math.floor(Math.random() * 35 + 50);
                 }
 
-                const randomLeft = Math.random() * 96; // Pure screen par failne ke liye
-                const randomDuration = (Math.random() * 1.2 + 1.6).toFixed(2);
+                const randomLeft = Math.random() * 96;
+                const randomDuration = (Math.random() * 1.0 + 1.5).toFixed(2);
                 const randomRotation = (Math.random() * 90 - 45) + "deg";
 
                 heart.style.left = randomLeft + "vw";
@@ -1581,25 +1579,22 @@
 
                 overlay.appendChild(heart);
 
-                // Animation khatam hote hi DOM clean ho jayega
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 15); // Fast rate taaki dher saare hearts aayein
+            }, 25); 
 
-            // Total 2.5 seconds tak blast chalega, phir smooth fade out ho jayega
+            // Blast duration
             setTimeout(() => {
                 clearInterval(heartInterval);
-
-                overlay.style.transition = "opacity 0.8s ease";
+                
+                overlay.style.transition = "opacity 0.6s ease";
                 overlay.style.opacity = "0";
 
                 setTimeout(() => {
                     overlay.style.display = "none";
-                    overlay.style.backdropFilter = "none";
-                    overlay.style.webkitBackdropFilter = "none";
-                }, 800);
-            }, 3000);
+                }, 600);
+            }, 2200);
         }
 
         function checkEmoji() {
