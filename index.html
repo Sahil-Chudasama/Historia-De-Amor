@@ -632,7 +632,7 @@
         }
 
         .icon-action-btn {
-            background: rgba(255, 255, 255, 0.85);
+            background: #ffffff;
             border: 2px solid rgba(255, 42, 95, 0.3);
             width: 65px;
             height: 65px;
@@ -1548,14 +1548,14 @@
             // Backdrop-filter blur yahan se hata diya hai taaki GPU par load na pade aur lag 100% khatam ho jaye
             overlay.innerHTML = "";
 
-            const heartTypes = ["🩷","🩷","🩷","🩷","🩷"];
+            const heartTypes = ["🩷","🩷","🩷","🩷"];
 
             // Interval ko 25ms kar diya hai taaki elements ka count balanced rahe aur makkhan chale
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
                 heart.style.willChange = "transform, opacity";
-                
+
                 heart.innerHTML = heartTypes[Math.floor(Math.random() * heartTypes.length)];
 
                 const sizeCategory = Math.random();
@@ -1582,12 +1582,12 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 25); 
+            }, 25);
 
             // Blast duration
             setTimeout(() => {
                 clearInterval(heartInterval);
-                
+
                 overlay.style.transition = "opacity 0.6s ease";
                 overlay.style.opacity = "0";
 
@@ -1618,7 +1618,7 @@
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
-                }, 900);
+                }, 1500);
 
             } else {
                 showToast("Hahaha.. Think Again.. 😏");
