@@ -355,7 +355,6 @@
             backdrop-filter: blur(8px);
             width: 100%;
             position: relative;
-            /* Neon Glow Pulse Animation */
             animation: neonGlowPulse 2.5s infinite ease-in-out;
         }
 
@@ -411,7 +410,6 @@
             text-transform: uppercase;
         }
 
-        /* Live Tick Animation for Seconds */
         @keyframes tickPop {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); color: #ff0040; }
@@ -421,6 +419,7 @@
         .tick-animation {
             animation: tickPop 0.4s ease-in-out;
         }
+
         /* --- Enhanced 3D Memory Stack Preview --- */
         .memory-stack-preview-container {
             display: flex;
@@ -451,7 +450,6 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27);
         }
 
-        /* Background Layer 3 (Sabse piche wali layer) */
         .stack-layer.layer-3 {
             top: 0;
             right: 0;
@@ -461,7 +459,6 @@
             box-shadow: 0 4px 10px rgba(255, 42, 95, 0.1);
         }
 
-        /* Background Layer 2 (Beech wali layer) */
         .stack-layer.layer-2 {
             top: 6px;
             right: 14px;
@@ -471,7 +468,6 @@
             box-shadow: 0 6px 15px rgba(255, 42, 95, 0.15);
         }
 
-        /* Main Front Layer 1 (Sabse upar wali clickable card layer) */
         .stack-layer.layer-1 {
             top: 12px;
             left: 4px;
@@ -585,7 +581,6 @@
             transform: rotateY(180deg);
         }
 
-        /* Slide Out Animation */
         .slide-out-left {
             animation: slideOutLeft 0.45s ease-out forwards;
         }
@@ -604,7 +599,6 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Dancing Cursive Indicator Below Card */
         .card-next-indicator {
             margin-top: 18px;
             font-family: 'Dancing Script', cursive;
@@ -727,6 +721,37 @@
             background: #000;
             padding: 8px;
         }
+
+        /* Step 3: Video Modal jab box ke andar se bahar nikle */
+        .video-modal.pop-from-box {
+            animation: modalBgFadeIn 0.4s ease forwards;
+        }
+        .video-modal.pop-from-box .video-modal-content {
+            animation: popOutFromGiftBox 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes modalBgFadeIn {
+            from { background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(0px); }
+            to { background-color: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); }
+        }
+
+        @keyframes popOutFromGiftBox {
+            0% {
+                transform: translateY(60px) scale(0.12);
+                opacity: 0;
+                box-shadow: 0 0 50px rgba(255, 42, 95, 1);
+            }
+            60% {
+                transform: translateY(-15px) scale(1.04);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+                box-shadow: 0 0 25px rgba(255, 42, 95, 0.6);
+            }
+        }
+
         .video-modal video {
             width: 100%;
             height: auto;
@@ -766,7 +791,7 @@
             margin: 10px 0 15px 0;
             max-height: 200px;
             overflow: hidden;
-            background: transparent !important; /* Koi background color nahi rahega */
+            background: transparent !important;
             border: none !important;
             box-shadow: none !important;
         }
@@ -776,10 +801,6 @@
             max-height: 200px;
             object-fit: contain;
             filter: drop-shadow(0 8px 15px rgba(255, 42, 95, 0.2));
-        }
-        @keyframes gentleFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
         }
 
         .sad-emoji-container {
@@ -829,13 +850,14 @@
             box-shadow: 0 10px 22px rgba(239, 68, 68, 0.6);
         }
 
+        /* --- Custom 3D Gift Box with Vertical Ribbon & 3-Step Opening --- */
         .gift-opening-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.78);
             backdrop-filter: blur(8px);
             z-index: 999999;
             display: none;
@@ -849,57 +871,118 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 28px;
         }
 
-        .big-gift-box {
-            font-size: 7.5rem;
+        .custom-gift-box {
             position: relative;
-            user-select: none;
+            width: 165px;
+            height: 155px;
             cursor: pointer;
-            animation: giftIdleBounce 1.5s ease-in-out infinite;
-            filter: drop-shadow(0 0 25px rgba(255, 42, 95, 0.8));
+            user-select: none;
+            animation: giftIdleBounce 1.6s ease-in-out infinite;
+            filter: drop-shadow(0 15px 30px rgba(255, 42, 95, 0.55));
+            margin-top: 25px;
         }
 
-        .big-gift-box:hover {
-            transform: scale(1.05);
+        .custom-gift-box.stop-bounce {
+            animation: none;
         }
 
-        .gift-lid {
+        /* Yellow Box Base */
+        .gift-base {
             position: absolute;
-            top: -25px;
+            bottom: 0;
+            left: 12px;
+            width: 141px;
+            height: 108px;
+            background: linear-gradient(135deg, #ffd12a 0%, #f59e0b 100%);
+            border-radius: 0 0 18px 18px;
+            box-shadow: inset 0 8px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Yellow Box Lid (Dhakkan) */
+        .gift-lid-box {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 165px;
+            height: 38px;
+            background: linear-gradient(135deg, #ffe047 0%, #fbbf24 100%);
+            border-radius: 12px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+            z-index: 4;
+            overflow: hidden;
+            transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+        }
+
+        /* Vertical Red Ribbon Strip (Upar se Niche tak) */
+        .ribbon-strip-lid,
+        .ribbon-strip-base {
+            position: absolute;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 4.5rem;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.27), opacity 0.5s ease;
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(90deg, #e11d48 0%, #ff2a5f 50%, #be123c 100%);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+            transform-origin: center;
+            transition: transform 0.5s ease, opacity 0.45s ease;
         }
 
-        .big-gift-box.open .gift-lid {
-            transform: translateX(-50%) translateY(-150px) rotate(-35deg) scale(1.2);
+        /* Top Red Bow */
+        .gift-bow {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4.2rem;
+            line-height: 1;
+            z-index: 5;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.45s ease;
+        }
+
+        /* STEP 1: Ribbon & Bow Unbind Animation */
+        .custom-gift-box.step1-ribbon .gift-bow {
+            transform: translateX(-50%) translateY(-45px) scale(1.25) rotate(20deg);
             opacity: 0;
         }
 
-        .big-gift-box.open {
-            animation: giftPopBlast 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        .custom-gift-box.step1-ribbon .ribbon-strip-lid,
+        .custom-gift-box.step1-ribbon .ribbon-strip-base {
+            transform: translateX(-50%) scaleX(0);
+            opacity: 0;
+        }
+
+        /* STEP 2: Lid Opens & Flies Up */
+        .custom-gift-box.step2-lid .gift-lid-box {
+            transform: translateY(-130px) rotate(-22deg) scale(1.05);
+            opacity: 0;
+        }
+
+        /* STEP 3: Box Glows & Fades Out as Video Pops Out */
+        .custom-gift-box.step3-pop {
+            transform: scale(1.15);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
         }
 
         @keyframes giftIdleBounce {
             0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            30% { transform: translateY(-12px) rotate(-4deg) scale(1.05); }
-            60% { transform: translateY(-5px) rotate(4deg) scale(1.02); }
-        }
-
-        @keyframes giftPopBlast {
-            0% { transform: scale(1); }
-            40% { transform: scale(1.3) rotate(5deg); }
-            100% { transform: scale(2.2); opacity: 0; }
+            30% { transform: translateY(-12px) rotate(-3deg) scale(1.04); }
+            60% { transform: translateY(-5px) rotate(3deg) scale(1.02); }
         }
 
         .gift-open-hint {
             color: #ffffff;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+            font-size: 1.9rem;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+            transition: opacity 0.3s ease;
         }
 
         .confetti-piece {
@@ -912,11 +995,11 @@
             opacity: 1;
             z-index: 1000000;
             pointer-events: none;
-            animation: confettiBurst 1.2s ease-out forwards;
+            animation: confettiBurst 1.3s ease-out forwards;
         }
 
         .confetti-piece.confetti-heart {
-            font-size: 16px;
+            font-size: 18px;
             background: transparent !important;
             box-shadow: none !important;
         }
@@ -938,6 +1021,7 @@
             }
         }
 
+        /* --- 4-Step Magical Envelope Styling --- */
         .envelope-overlay {
             position: fixed;
             top: 0;
@@ -998,7 +1082,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
+            perspective: 1000px;
         }
 
         .envelope-hint {
@@ -1020,7 +1104,7 @@
             border-right: 150px solid transparent;
             border-top: 110px solid #ff4d6d;
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.7s ease-in-out, z-index 0.2s ease;
             z-index: 5;
         }
 
@@ -1034,6 +1118,7 @@
             border-bottom-left-radius: 12px;
             border-bottom-right-radius: 12px;
             z-index: 4;
+            transition: opacity 0.4s ease;
         }
 
         .letter-paper {
@@ -1043,12 +1128,12 @@
             transform: translateX(-50%) translateY(0) scale(0.95);
             transform-origin: bottom center;
             width: 280px;
-            height: 190px;
+            height: 180px;
             background: #fff0f3;
             border-radius: 12px;
             padding: 18px 14px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            transition: all 0.8s ease-in-out;
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.27), all 0.7s ease-in-out;
             z-index: 3;
             overflow: hidden;
             font-family: 'Dancing Script', cursive;
@@ -1058,24 +1143,51 @@
             line-height: 1.4;
         }
 
-        .envelope.open .flap {
+        /* --- Updated Step 1: Sirf Dil shake hoga, Naam stable rahega --- */
+        @keyframes heartShakeOnly {
+            0% { transform: rotate(0deg) scale(1); opacity: 1; }
+            20% { transform: rotate(-14deg) scale(1.15); opacity: 1; }
+            40% { transform: rotate(14deg) scale(1.15); opacity: 1; }
+            60% { transform: rotate(-10deg) scale(1.1); opacity: 0.9; }
+            80% { transform: rotate(10deg) scale(1.05); opacity: 0.5; }
+            100% { transform: rotate(0deg) scale(0.8); opacity: 0; }
+        }
+
+        .envelope.seal-breaking .seal-heart {
+            animation: heartShakeOnly 0.55s ease-in-out forwards;
+        }
+
+        .envelope.seal-breaking .seal-name {
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        /* Step 2: Flap upar ki taraf khulega */
+        .envelope.flap-open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
-        .envelope.open {
+        /* Step 3: Paper envelope ke andar se upar ki taraf bahar niklega */
+        .envelope.letter-out .letter-paper {
+            transform: translateX(-50%) translateY(-120px) scale(0.98);
+            z-index: 6;
+        }
+
+        /* Step 4: Paper screen ke center mein zoom hokar bada ho jayega */
+        .envelope.paper-zoomed {
             background: transparent;
             box-shadow: none;
             pointer-events: none;
         }
-        .envelope.open .pocket,
-        .envelope.open .flap {
+
+        .envelope.paper-zoomed .pocket,
+        .envelope.paper-zoomed .flap {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s ease;
         }
 
-        .envelope.open .letter-paper {
+        .envelope.paper-zoomed .letter-paper {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -1083,9 +1195,10 @@
             width: 90%;
             max-width: 350px;
             height: 420px;
-            z-index: 6;
+            z-index: 10;
             overflow-y: auto;
             padding: 25px 20px;
+            pointer-events: auto;
         }
 
         .letter-signature {
@@ -1142,7 +1255,6 @@
             flex-direction: column;
             align-items: center;
             pointer-events: none;
-            transition: opacity 0.4s ease;
         }
 
         .seal-heart {
@@ -1159,11 +1271,6 @@
             font-weight: 700;
             margin-top: -5px;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .envelope.open .envelope-seal {
-            opacity: 0;
-            visibility: hidden;
         }
 
         #floating-toast {
@@ -1306,7 +1413,6 @@
                 What would you like to watch or listen?
             </h3>
             <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
-                <!-- Watch Button with MP4/Video Icon -->
                 <!-- Watch Button -->
                 <button onclick="chooseWatchOption()" class="pill-glow-btn-yes" style="padding: 12px 25px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
                     Watch
@@ -1328,7 +1434,7 @@
 
     <!-- Direct Movie Song Video Selection Modal (Opened when "Watch" is selected) -->
     <div id="musicVideoModal" class="video-modal">
-    <div class="video-modal-content video-box-container">
+        <div class="video-modal-content video-box-container">
             <div class="close-modal-btn" onclick="closeMusicVideoModal()">&times;</div>
             <video id="musicSelectionVideo" controls controlsList="nodownload" playsinline preload="none">
                 Your browser does not support the video tag.
@@ -1401,7 +1507,6 @@
                 </div>
             </div>
 
-
             <!-- "Wait, are you sure?" View (3rd Popup) -->
             <div id="popup-sure-view" style="display: none;">
                 <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.1rem; margin-bottom: 12px; line-height: 1.3;">
@@ -1423,22 +1528,22 @@
 
             <!-- "Annoy You" View (4th Popup) -->
             <div id="popup-annoy-view" style="display: none;">
-            <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 12px; line-height: 1.3;">
-                If you become my girlfriend, I will annoy you a lot every day. 😅
-            </h3>
+                <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 12px; line-height: 1.3;">
+                    If you become my girlfriend, I will annoy you a lot every day. 😅
+                </h3>
 
-            <div class="proposal-img-container" style="background: #ffffff; padding: 0px; border: none; box-shadow: none; display: inline-flex; justify-content: center; align-items: center;">
-                <video autoplay muted loop playsinline class="proposal-img" style="width: 100%; max-height: 180px; object-fit: contain; border-radius: 0px; pointer-events: none; border: none; outline: none;">
-                    <source src="raw/annoy-animation.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+                <div class="proposal-img-container" style="background: #ffffff; padding: 0px; border: none; box-shadow: none; display: inline-flex; justify-content: center; align-items: center;">
+                    <video autoplay muted loop playsinline class="proposal-img" style="width: 100%; max-height: 180px; object-fit: contain; border-radius: 0px; pointer-events: none; border: none; outline: none;">
+                        <source src="raw/annoy-animation.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
 
-            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
-                <button onclick="handleAnnoyYes()" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">I've been waiting for this!</button>
-                <button onclick="handleAnnoyNo()" class="pill-glow-btn-no" style="padding: 12px 20px; font-size: 0.95rem;">Hmm, let me think...</button>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                    <button onclick="handleAnnoyYes()" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">I've been waiting for this!</button>
+                    <button onclick="handleAnnoyNo()" class="pill-glow-btn-no" style="padding: 12px 20px; font-size: 0.95rem;">Hmm, let me think...</button>
+                </div>
             </div>
-        </div>
 
             <!-- "If Select No" View -->
             <div id="popup-sorry-view" style="display: none;">
@@ -1455,14 +1560,19 @@
         </div>
     </div>
 
-    <!-- Center Big Gift Box Opening Animation Overlay -->
+    <!-- Custom 3D Gift Box with Vertical Ribbon & 3-Step Opening Animation -->
     <div id="giftOpeningOverlay" class="gift-opening-overlay" onclick="triggerGiftOpen()">
         <div class="gift-overlay-content">
-            <div id="bigGiftBox" class="big-gift-box">
-                <div class="gift-lid">🎀</div>
-                <div class="gift-body">🎁</div>
+            <div id="bigGiftBox" class="custom-gift-box">
+                <div class="gift-bow">🎀</div>
+                <div class="gift-lid-box">
+                    <div class="ribbon-strip-lid"></div>
+                </div>
+                <div class="gift-base">
+                    <div class="ribbon-strip-base"></div>
+                </div>
             </div>
-            <div class="gift-open-hint">Click to Open</div>
+            <div id="giftOpenHint" class="gift-open-hint">Click to Open</div>
         </div>
     </div>
 
@@ -1516,19 +1626,16 @@
             }
         }
 
-        // --- Smart Swapping Hint Logic (Button <-> Hint Text) ---
         let hintTimeout = null;
         function revealHint() {
             const hintBtn = document.getElementById("show-hint-btn");
             const hintBox = document.getElementById("lock-hint");
 
-            // Button hide karo aur hint text show karo
             hintBtn.style.display = "none";
             hintBox.style.display = "block";
 
             if (hintTimeout) clearTimeout(hintTimeout);
 
-            // 5 seconds baad hint text hide hoga aur wapas button aa jayega
             hintTimeout = setTimeout(() => {
                 hintBox.style.display = "none";
                 hintBtn.style.display = "inline-block";
@@ -1545,12 +1652,10 @@
             const overlay = document.getElementById("heart-overlay");
             overlay.style.display = "block";
             overlay.style.opacity = "1";
-            // Backdrop-filter blur yahan se hata diya hai taaki GPU par load na pade aur lag 100% khatam ho jaye
             overlay.innerHTML = "";
 
             const heartTypes = ["🩷","🩷","🩷","🩷"];
 
-            // Interval ko 25ms kar diya hai taaki elements ka count balanced rahe aur makkhan chale
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.className = "blast-heart";
@@ -1584,7 +1689,6 @@
                 }, parseFloat(randomDuration) * 1000);
             }, 25);
 
-            // Blast duration
             setTimeout(() => {
                 clearInterval(heartInterval);
 
@@ -1637,7 +1741,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const startDate = new Date("2025-07-31T18:30:00");
-            let oldSeconds = -1; // Seconds track karne ke liye
+            let oldSeconds = -1;
 
             function updateTimer() {
                 const now = new Date();
@@ -1668,10 +1772,9 @@
                 const secElement = document.getElementById("seconds");
                 secElement.innerText = seconds;
 
-                // Jaise hi naya second badlega, tick animation trigger hogi
                 if (seconds !== oldSeconds) {
                     secElement.classList.remove("tick-animation");
-                    void secElement.offsetWidth; // Trigger reflow for animation restart
+                    void secElement.offsetWidth;
                     secElement.classList.add("tick-animation");
                     oldSeconds = seconds;
                 }
@@ -1697,7 +1800,7 @@
             setInterval(createHeart, 800);
         });
 
-        // --- Interactive Memory Modal & 4-Card 3D Flip + Slide Logic ---
+        // --- Interactive Memory Modal & 3D Flip + Slide Logic ---
         const memories = [
             {
                 title: "Memory 1",
@@ -1726,7 +1829,7 @@
         ];
 
         let currentStep = 0;
-        let memoryState = "title"; // "title", "revealed", "end"
+        let memoryState = "title";
 
         function openMemoryModal() {
             const modal = document.getElementById("memoryModal");
@@ -1764,12 +1867,10 @@
             const indicator = document.getElementById("modalCardIndicator");
 
             if (memoryState === "title") {
-                // Pehla tap: Card 3D flip hoke text dikhayega
                 card.classList.add("flipped");
                 memoryState = "revealed";
 
             } else if (memoryState === "revealed") {
-                // Doosra tap: Slide out hone se pehle turant flipped hatao taaki front side dikhe
                 card.classList.remove("flipped");
                 card.classList.remove("fade-in-card");
                 card.classList.add("slide-out-left");
@@ -1807,8 +1908,10 @@
                 const musicBtn = document.getElementById('music-button');
                 const iconSpan = document.getElementById('music-icon-span');
                 musicBtn.classList.remove('playing');
-                iconSpan.className = "scaling-music-emoji";
-                iconSpan.innerHTML = "🎵";
+                if (iconSpan) {
+                    iconSpan.className = "scaling-music-emoji";
+                    iconSpan.innerHTML = "🎵";
+                }
             } else {
                 openMusicOptionModal();
             }
@@ -1820,8 +1923,10 @@
                 const musicBtn = document.getElementById('music-button');
                 const iconSpan = document.getElementById('music-icon-span');
                 musicBtn.classList.remove('playing');
-                iconSpan.className = "scaling-music-emoji";
-                iconSpan.innerHTML = "🎵";
+                if (iconSpan) {
+                    iconSpan.className = "scaling-music-emoji";
+                    iconSpan.innerHTML = "🎵";
+                }
             }
 
             const modal = document.getElementById("musicChoiceModal");
@@ -1844,7 +1949,6 @@
         function chooseListenOption() {
             closeMusicChoiceModal();
 
-            // Jab user click karega tabhi romantic song load hoga
             if (!romanticAudio.getAttribute('src')) {
                 romanticAudio.src = "raw/Romantic_Song.mp3";
                 romanticAudio.load();
@@ -1854,8 +1958,10 @@
                 const musicBtn = document.getElementById('music-button');
                 const iconSpan = document.getElementById('music-icon-span');
                 musicBtn.classList.add('playing');
-                iconSpan.className = "";
-                iconSpan.innerHTML = "||";
+                if (iconSpan) {
+                    iconSpan.className = "";
+                    iconSpan.innerHTML = "||";
+                }
             }).catch(e => console.log("Audio play error:", e));
         }
 
@@ -1863,7 +1969,6 @@
             const videoModalEl = document.getElementById("musicVideoModal");
             const videoEl = document.getElementById("musicSelectionVideo");
 
-            // Yeh check karega ki jab user click kare tabhi net use ho
             if (!videoEl.getAttribute('src')) {
                 videoEl.src = "raw/Movie_Song.mp4";
                 videoEl.load();
@@ -1881,14 +1986,14 @@
 
             videoModalEl.style.display = "none";
             videoEl.pause();
-            videoEl.currentTime, 0;
+            videoEl.currentTime = 0;
 
             if (window.history.state && window.history.state.musicVideoOpen) {
                 window.history.back();
             }
         }
 
-        // --- Magical Envelope & Typewriter Letter Logic ---
+        // --- 4-Step Magical Envelope & Typewriter Letter Logic ---
         const fullLetterMessage = `My Dearest Khushu ❤️
 
 You are the best decision my heart ever made. I love you more than words can ever capture. Every single day talking with you feels like a beautiful dream come true.
@@ -1896,6 +2001,20 @@ You are the best decision my heart ever made. I love you more than words can eve
 Thank you for being my smile and my favorite person. No matter where life takes us, my heart will always belong to you.`;
 
         let typewriterTimeout = null;
+        let envStep1 = null;
+        let envStep2 = null;
+        let envStep3 = null;
+
+        function resetEnvelopeClasses(envelope) {
+            envelope.classList.remove("seal-breaking", "flap-open", "letter-out", "paper-zoomed");
+        }
+
+        function clearEnvelopeTimers() {
+            clearTimeout(typewriterTimeout);
+            clearTimeout(envStep1);
+            clearTimeout(envStep2);
+            clearTimeout(envStep3);
+        }
 
         function openEnvelopeModal() {
             const modal = document.getElementById("envelopeModal");
@@ -1908,12 +2027,12 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             modal.style.display = "flex";
             history.pushState({ envelopeOpen: true }, "");
 
-            envelope.classList.remove("open");
+            resetEnvelopeClasses(envelope);
             containerModal.classList.remove("paper-open");
             hint.style.display = "block";
             typewriterEl.innerHTML = "";
             signatureEl.style.opacity = "0";
-            if (typewriterTimeout) clearTimeout(typewriterTimeout);
+            clearEnvelopeTimers();
         }
 
         function closeEnvelopeModal() {
@@ -1923,10 +2042,10 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             const signatureEl = document.getElementById("letter-signature");
 
             modal.style.display = "none";
-            envelope.classList.remove("open");
+            resetEnvelopeClasses(envelope);
             containerModal.classList.remove("paper-open");
             signatureEl.style.opacity = "0";
-            if (typewriterTimeout) clearTimeout(typewriterTimeout);
+            clearEnvelopeTimers();
 
             if (window.history.state && window.history.state.envelopeOpen) {
                 window.history.back();
@@ -1938,15 +2057,32 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             const hint = document.getElementById("envelopeHint");
             const containerModal = document.getElementById("envelopeModalContainer");
 
-            if (envelope.classList.contains("open")) return;
+            if (envelope.classList.contains("seal-breaking")) return;
 
-            envelope.classList.add("open");
-            containerModal.classList.add("paper-open");
             hint.style.display = "none";
 
-            typewriterTimeout = setTimeout(() => {
-                startTypewriterEffect();
-            }, 800);
+            // Step 1 (0ms): Sirf seal ka dil shake hoke fade out hoga
+            envelope.classList.add("seal-breaking");
+
+            // Step 2 (450ms): Upar wala flap palat kar khulega
+            envStep1 = setTimeout(() => {
+                envelope.classList.add("flap-open");
+            }, 450);
+
+            // Step 3 (1150ms): Letter dheere se upar ki taraf bahar niklega
+            envStep2 = setTimeout(() => {
+                envelope.classList.add("letter-out");
+            }, 1150);
+
+            // Step 4 (1900ms): Letter zoom hokar screen par open hoga aur likhna shuru karega
+            envStep3 = setTimeout(() => {
+                envelope.classList.add("paper-zoomed");
+                containerModal.classList.add("paper-open");
+
+                typewriterTimeout = setTimeout(() => {
+                    startTypewriterEffect();
+                }, 500);
+            }, 1900);
         }
 
         let toastTimeout = null;
@@ -1984,9 +2120,26 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             type();
         }
 
-        // --- Gift Video Modal & Proposal Flow Logic ---
+        // --- Gift Video Modal & 3-Step Gift Opening Flow Logic ---
         const videoModal = document.getElementById("videoModal");
         const popupVideo = document.getElementById("popupVideo");
+        let giftStep1Timer = null;
+        let giftStep2Timer = null;
+        let giftStep3Timer = null;
+
+        function resetGiftBoxState() {
+            const bigGiftBox = document.getElementById("bigGiftBox");
+            const giftHint = document.getElementById("giftOpenHint");
+            if (bigGiftBox) {
+                bigGiftBox.classList.remove("stop-bounce", "step1-ribbon", "step2-lid", "step3-pop");
+            }
+            if (giftHint) {
+                giftHint.style.opacity = "1";
+            }
+            clearTimeout(giftStep1Timer);
+            clearTimeout(giftStep2Timer);
+            clearTimeout(giftStep3Timer);
+        }
 
         function openVideoModal() {
             const interModal = document.getElementById("intermediateModal");
@@ -2011,8 +2164,10 @@ Thank you for being my smile and my favorite person. No matter where life takes 
                 const musicBtn = document.getElementById('music-button');
                 const iconSpan = document.getElementById('music-icon-span');
                 musicBtn.classList.remove('playing');
-                iconSpan.className = "scaling-music-emoji";
-                iconSpan.innerHTML = "🎵";
+                if (iconSpan) {
+                    iconSpan.className = "scaling-music-emoji";
+                    iconSpan.innerHTML = "🎵";
+                }
             }
         }
 
@@ -2107,9 +2262,8 @@ Thank you for being my smile and my favorite person. No matter where life takes 
         function handleAnnoyYes() {
             document.getElementById("intermediateModal").style.display = "none";
             const giftOverlay = document.getElementById("giftOpeningOverlay");
-            const bigGiftBox = document.getElementById("bigGiftBox");
 
-            bigGiftBox.classList.remove("open");
+            resetGiftBoxState();
             giftOverlay.style.display = "flex";
         }
 
@@ -2129,17 +2283,32 @@ Thank you for being my smile and my favorite person. No matter where life takes 
         function triggerGiftOpen() {
             const bigGiftBox = document.getElementById("bigGiftBox");
             const giftOverlay = document.getElementById("giftOpeningOverlay");
+            const giftHint = document.getElementById("giftOpenHint");
 
-            if (bigGiftBox.classList.contains("open")) return;
+            if (bigGiftBox.classList.contains("step1-ribbon")) return;
 
-            bigGiftBox.classList.add("open");
-            createConfettiExplosion();
+            // Stop idle bounce & hide hint
+            bigGiftBox.classList.add("stop-bounce");
+            if (giftHint) giftHint.style.opacity = "0";
 
-            setTimeout(() => {
-                giftOverlay.style.display = "none";
+            // STEP 1 (0ms): Upar se niche tak bandhi ribbon aur bow khulega
+            bigGiftBox.classList.add("step1-ribbon");
+
+            // STEP 2 (550ms): Upar ka dhakkan (lid) khul kar hawa mein udega
+            giftStep1Timer = setTimeout(() => {
+                bigGiftBox.classList.add("step2-lid");
+            }, 550);
+
+            // STEP 3 (1100ms): Andar se Confetti burst hoga aur box ke andar se Video Modal pop-out hokar niklega
+            giftStep2Timer = setTimeout(() => {
+                createConfettiExplosion();
+                bigGiftBox.classList.add("step3-pop");
+
+                videoModal.classList.remove("pop-from-box");
+                void videoModal.offsetWidth;
+                videoModal.classList.add("pop-from-box");
                 videoModal.style.display = "flex";
 
-                // Yeh check karega ki jab gift khule tabhi net use ho
                 if (!popupVideo.getAttribute('src')) {
                     popupVideo.src = "raw/Gift_Video.mp4";
                     popupVideo.load();
@@ -2147,12 +2316,17 @@ Thank you for being my smile and my favorite person. No matter where life takes 
 
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
-            }, 1000);
+
+                giftStep3Timer = setTimeout(() => {
+                    giftOverlay.style.display = "none";
+                    resetGiftBoxState();
+                }, 400);
+            }, 1100);
         }
 
         function createConfettiExplosion() {
             const colors = ['#ff2a5f', '#ff758f', '#ffd700', '#4ade80', '#38bdf8', '#c084fc'];
-            const confettiCount = 75;
+            const confettiCount = 85;
 
             for (let i = 0; i < confettiCount; i++) {
                 const confetti = document.createElement('div');
@@ -2171,7 +2345,7 @@ Thank you for being my smile and my favorite person. No matter where life takes 
                 }
 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 250 + 50;
+                const distance = Math.random() * 260 + 60;
                 const randX = Math.cos(angle) * distance + 'px';
                 const randY = Math.sin(angle) * distance + 'px';
                 const randRot = Math.random() * 360 + 'deg';
@@ -2182,12 +2356,13 @@ Thank you for being my smile and my favorite person. No matter where life takes 
 
                 document.body.appendChild(confetti);
 
-                setTimeout(() => confetti.remove(), 1200);
+                setTimeout(() => confetti.remove(), 1300);
             }
         }
 
         function closeVideoModal() {
             videoModal.style.display = "none";
+            videoModal.classList.remove("pop-from-box");
             popupVideo.pause();
             popupVideo.currentTime = 0;
 
@@ -2208,6 +2383,7 @@ Thank you for being my smile and my favorite person. No matter where life takes 
 
             if (videoModal.style.display === "flex") {
                 videoModal.style.display = "none";
+                videoModal.classList.remove("pop-from-box");
                 popupVideo.pause();
                 popupVideo.currentTime = 0;
                 const giftBtn = document.querySelector('.icon-action-btn:has(.bouncing-emoji)');
@@ -2239,6 +2415,7 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             const giftOverlay = document.getElementById("giftOpeningOverlay");
             if (giftOverlay && giftOverlay.style.display === "flex") {
                 giftOverlay.style.display = "none";
+                resetGiftBoxState();
             }
 
             const envelopeModal = document.getElementById("envelopeModal");
@@ -2247,10 +2424,10 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             const signatureEl = document.getElementById("letter-signature");
             if (envelopeModal && envelopeModal.style.display === "flex") {
                 envelopeModal.style.display = "none";
-                envelope.classList.remove("open");
+                resetEnvelopeClasses(envelope);
                 containerModal.classList.remove("paper-open");
                 signatureEl.style.opacity = "0";
-                if (typewriterTimeout) clearTimeout(typewriterTimeout);
+                clearEnvelopeTimers();
             }
         });
     </script>
