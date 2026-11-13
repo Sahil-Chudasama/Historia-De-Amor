@@ -1209,8 +1209,8 @@
 
         .envelope-container-modal.paper-open .close-envelope-btn {
             position: fixed;
-            top: calc(50% - 220px);
-            right: calc(50% - 180px);
+            top: calc(50% - 227px);
+            right: calc(50% - 155px);
             z-index: 1015;
         }
 
@@ -1654,7 +1654,7 @@
             overlay.style.opacity = "1";
             overlay.innerHTML = "";
 
-            const heartTypes = ["🩷","🩷","🩷","🩷"];
+            const heartTypes = ["🩷","🩷"];
 
             const heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
@@ -1687,7 +1687,7 @@
                 setTimeout(() => {
                     heart.remove();
                 }, parseFloat(randomDuration) * 1000);
-            }, 25);
+            }, 20);
 
             setTimeout(() => {
                 clearInterval(heartInterval);
@@ -1698,7 +1698,7 @@
                 setTimeout(() => {
                     overlay.style.display = "none";
                 }, 600);
-            }, 2200);
+            }, 3500);
         }
 
         function checkEmoji() {
@@ -1722,7 +1722,7 @@
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
-                }, 1500);
+                }, 2000);
 
             } else {
                 showToast("Hahaha.. Think Again.. 😏");
