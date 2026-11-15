@@ -1298,6 +1298,25 @@
             visibility: visible;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* 1. Mobile devices ke liye (Tap karte waqt aane wala blue/gray box hatane ke liye) */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        /* 2. Laptop aur Desktop ke liye (Click ya focus hone par aane wali blue outline hatane ke liye) */
+        button, a, input, select, textarea,
+        .icon-action-btn, .lock-btn, .pill-glow-btn-yes, .pill-glow-btn-no, .envelope {
+            outline: none !important;
+        }
+
+        button:focus, button:active,
+        .icon-action-btn:focus, .icon-action-btn:active,
+        .lock-btn:focus, .lock-btn:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
     </style>
 </head>
 <body>
