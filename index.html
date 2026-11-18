@@ -1317,6 +1317,41 @@
             outline: none !important;
             box-shadow: none !important;
         }
+
+        /* Riddle Test Styling */
+        .riddle-poem {
+            font-family: 'Poppins', sans-serif;
+            /* Mobile par chota aur Laptop par bada auto-adjusting font size */
+            font-size: clamp(0.68rem, 2.7vw, 0.85rem);
+            color: #800f2f;
+            line-height: 1.75;
+            margin: 12px 0;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.75);
+            padding: 14px 12px;
+            border-radius: 14px;
+            border: 1px dashed rgba(255, 42, 95, 0.4);
+            white-space: nowrap; /* Kisi bhi line ko tootne se rokega */
+            overflow-x: auto;
+        }
+        .riddle-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            text-align: center;
+            border: 1px solid #ff758f;
+            border-radius: 50px;
+            outline: none;
+            background: #ffffff;
+            color: #0f172a;
+            margin: 10px 0 15px 0;
+            transition: all 0.3s ease;
+        }
+        .riddle-input:focus {
+            border-color: #ff2a5f;
+            box-shadow: 0 0 12px rgba(255, 42, 95, 0.3);
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -1338,7 +1373,7 @@
             </div>
 
             <div id="lock-inputs" class="lock-input-group">
-                <input type="text" id="emoji-input" class="lock-input" placeholder="Type emoji here..." autocomplete="off" autofocus>
+                <input type="text" id="emoji-input" class="lock-input" placeholder="Type emoji here..." autocomplete="off">
                 <button type="button" class="lock-btn" onclick="checkEmoji()">Unlock Surprise</button>
             </div>
             <div id="lock-msg" class="lock-message"></div>
@@ -1564,6 +1599,62 @@
                 </div>
             </div>
 
+            <!-- "Take a Test First" Riddle View (5th Popup) -->
+            <div id="popup-riddle-view" style="display: none;">
+                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
+                    Take a test first
+                </h3>
+
+                <div class="riddle-poem">
+                    I have no weight, yet I can crush a heart.<br>
+                    I have no shape, yet I can shape your world.<br>
+                    You can't buy me, but you can give me away.<br>
+                    the more you give, the more you hold.<br>
+                    What am I?
+                </div>
+
+                <input type="text" id="riddle-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
+
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
+                    <button onclick="checkRiddleAnswer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
+                    <button onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Leave</button>
+                </div>
+            </div>
+
+            <!-- "Last Test" Riddle View (6th Popup) -->
+            <div id="popup-riddle2-view" style="display: none;">
+                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
+                    Last one
+                </h3>
+
+                <div class="riddle-poem">
+                    It takes years to build, seconds to break,<br>
+                    and forever to repair once it slips away.<br>
+                    You can feel its strength, but you cannot hold it,<br>
+                    once it is gone, it is rarely the same.<br>
+                    What am I?
+                </div>
+
+                <input type="text" id="riddle2-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
+
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
+                    <button onclick="checkRiddle2Answer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
+                    <button onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Leave</button>
+                </div>
+            </div>
+
+            <!-- "Promise" Q-A View (7th Popup) -->
+            <div id="popup-promise-view" style="display: none;">
+                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.25rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; padding: 0 10px;">
+                    Love and trust keep us strong. Promise to always love and trust me, so nothing can ever break our relationship?
+                </h3>
+
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                    <button onclick="handlePromiseOk()" class="pill-glow-btn-yes" style="padding: 12px 25px; font-size: 0.95rem;">I Promise</button>
+                    <button onclick="handlePromiseMaybe()" class="pill-glow-btn-no" style="padding: 12px 25px; font-size: 0.95rem;">Maybe</button>
+                </div>
+            </div>
+
             <!-- "If Select No" View -->
             <div id="popup-sorry-view" style="display: none;">
                 <h3 style="color: #f87171; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 5px;">
@@ -1623,7 +1714,6 @@
                 lockScreen.style.display = "none";
             } else {
                 lockScreen.style.display = "flex";
-                emojiInput.focus();
             }
         });
 
@@ -1751,7 +1841,6 @@
                 emojiInput.classList.add("shake");
 
                 emojiInput.value = "";
-                emojiInput.focus();
             }
         }
 
@@ -2115,7 +2204,7 @@ Thank you for being my smile and my favorite person. No matter where life takes 
 
             toastTimeout = setTimeout(() => {
                 toast.classList.remove("show");
-            }, 2000);
+            }, 3500);
         }
 
         function startTypewriterEffect() {
@@ -2173,7 +2262,9 @@ Thank you for being my smile and my favorite person. No matter where life takes 
             document.getElementById("popup-really-view").style.display = "none";
             document.getElementById("popup-sure-view").style.display = "none";
             document.getElementById("popup-annoy-view").style.display = "none";
+            document.getElementById("popup-riddle-view").style.display = "none";
             document.getElementById("popup-sorry-view").style.display = "none";
+            document.getElementById("popup-promise-view").style.display = "none";
 
             const giftBtn = document.querySelector('.icon-action-btn:has(.bouncing-emoji)');
             if (giftBtn) giftBtn.classList.add('active');
@@ -2279,11 +2370,17 @@ Thank you for being my smile and my favorite person. No matter where life takes 
         }
 
         function handleAnnoyYes() {
-            document.getElementById("intermediateModal").style.display = "none";
-            const giftOverlay = document.getElementById("giftOpeningOverlay");
+            const modalContent = document.getElementById("intermediateModalContent");
+            modalContent.style.opacity = "0";
+            modalContent.style.transform = "scale(0.9)";
 
-            resetGiftBoxState();
-            giftOverlay.style.display = "flex";
+            setTimeout(() => {
+                document.getElementById("popup-annoy-view").style.display = "none";
+                document.getElementById("popup-riddle-view").style.display = "block";
+                document.getElementById("riddle-answer-input").value = "";
+                modalContent.style.opacity = "1";
+                modalContent.style.transform = "scale(1)";
+            }, 200);
         }
 
         function handleAnnoyNo() {
@@ -2298,6 +2395,93 @@ Thank you for being my smile and my favorite person. No matter where life takes 
                 modalContent.style.transform = "scale(1)";
             }, 200);
         }
+
+        function checkRiddleAnswer() {
+            const ansInput = document.getElementById("riddle-answer-input");
+            const val = ansInput.value.trim().toLowerCase();
+
+            if (val === "love") {
+                // Pehli riddle sahi hone par ab doosri riddle (Last test) khulegi
+                const modalContent = document.getElementById("intermediateModalContent");
+                modalContent.style.opacity = "0";
+                modalContent.style.transform = "scale(0.9)";
+
+                setTimeout(() => {
+                    document.getElementById("popup-riddle-view").style.display = "none";
+                    document.getElementById("popup-riddle2-view").style.display = "block";
+                    document.getElementById("riddle2-answer-input").value = "";
+                    modalContent.style.opacity = "1";
+                    modalContent.style.transform = "scale(1)";
+                }, 200);
+
+            } else {
+                showToast("Hahaha.. Think Again.. 😏");
+                ansInput.classList.remove("shake");
+                void ansInput.offsetWidth;
+                ansInput.classList.add("shake");
+                ansInput.value = "";
+            }
+        }
+
+        function checkRiddle2Answer() {
+            const ansInput = document.getElementById("riddle2-answer-input");
+            const val = ansInput.value.trim().toLowerCase();
+
+            if (val === "trust") {
+                // Doosri riddle sahi hone par ab Promise Q-A view khulega
+                const modalContent = document.getElementById("intermediateModalContent");
+                modalContent.style.opacity = "0";
+                modalContent.style.transform = "scale(0.9)";
+
+                setTimeout(() => {
+                    document.getElementById("popup-riddle2-view").style.display = "none";
+                    document.getElementById("popup-promise-view").style.display = "block";
+                    modalContent.style.opacity = "1";
+                    modalContent.style.transform = "scale(1)";
+                }, 200);
+
+            } else {
+                showToast("Hahaha.. Think Again.. 😏");
+                ansInput.classList.remove("shake");
+                void ansInput.offsetWidth;
+                ansInput.classList.add("shake");
+                ansInput.value = "";
+            }
+        }
+
+        function handlePromiseOk() {
+            document.getElementById("intermediateModal").style.display = "none";
+            const giftOverlay = document.getElementById("giftOpeningOverlay");
+
+            resetGiftBoxState();
+            giftOverlay.style.display = "flex";
+        }
+
+        function handlePromiseMaybe() {
+            const modalContent = document.getElementById("intermediateModalContent");
+            modalContent.style.opacity = "0";
+            modalContent.style.transform = "scale(0.9)";
+
+            setTimeout(() => {
+                document.getElementById("popup-promise-view").style.display = "none";
+                document.getElementById("popup-sorry-view").style.display = "block";
+                modalContent.style.opacity = "1";
+                modalContent.style.transform = "scale(1)";
+            }, 200);
+        }
+
+        document.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                const riddleView = document.getElementById("popup-riddle-view");
+                const riddle2View = document.getElementById("popup-riddle2-view");
+
+                if (riddleView && riddleView.style.display === "block") {
+                    checkRiddleAnswer();
+                } else if (riddle2View && riddle2View.style.display === "block") {
+                    checkRiddle2Answer();
+                }
+            }
+        });
 
         function triggerGiftOpen() {
             const bigGiftBox = document.getElementById("bigGiftBox");
