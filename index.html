@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Historia-De-Amor</title>
 
     <!-- Social Media Link Share Preview Control -->
@@ -20,6 +20,7 @@
             --primary-color: #ff2a5f;
             --secondary-color: #ff758f;
             --bg-light: #fff0f5;
+            --mobile-scale: 1;
         }
         * {
             box-sizing: border-box;
@@ -677,16 +678,6 @@
             color: white;
             box-shadow: 0 6px 20px rgba(255, 42, 95, 0.4);
             transform: translateY(0);
-        }
-
-        @media (max-width: 390px) {
-            .action-bar {
-                gap: 10px;
-            }
-            .icon-action-btn {
-                width: 56px;
-                height: 56px;
-            }
         }
 
         /* --- Modal Styling --- */
@@ -1678,6 +1669,110 @@
             box-shadow: 0 0 12px rgba(255, 42, 95, 0.3);
         }
 
+        /* --- Mobile-Only Auto-Fit Rules (PC remains untouched) --- */
+        @media (max-width: 768px) {
+            html, body {
+                width: 100%;
+                min-height: 100vh;
+                min-height: 100dvh;
+                overflow-x: hidden;
+            }
+            body {
+                padding: max(10px, env(safe-area-inset-top, 10px)) max(8px, env(safe-area-inset-right, 8px)) max(10px, env(safe-area-inset-bottom, 10px)) max(8px, env(safe-area-inset-left, 8px));
+            }
+            .content-box {
+                max-width: min(650px, 96vw);
+                transform: scale(var(--mobile-scale));
+                transform-origin: center center;
+            }
+            #lock-screen {
+                align-items: center;
+                padding: max(14px, env(safe-area-inset-top, 14px)) 14px max(14px, env(safe-area-inset-bottom, 14px)) 14px;
+                overflow-y: auto;
+            }
+            .lock-card {
+                max-width: min(420px, 94vw);
+                transform: scale(var(--mobile-scale));
+                transform-origin: center center;
+            }
+            .action-bar {
+                gap: clamp(8px, 2.8vw, 14px);
+            }
+            .icon-action-btn {
+                width: clamp(50px, 14vw, 62px);
+                height: clamp(50px, 14vw, 62px);
+            }
+            .video-modal-content {
+                max-width: min(420px, 92vw);
+                max-height: 88dvh;
+                overflow: visible;
+            }
+            .video-modal-content.video-box-container {
+                overflow: visible;
+            }
+            .video-modal video {
+                max-height: 68dvh;
+            }
+            .close-modal-btn {
+                top: -12px;
+                right: -12px;
+                width: 34px;
+                height: 34px;
+                font-size: 20px;
+            }
+            .envelope-overlay {
+                padding: 14px;
+            }
+            .envelope {
+                width: min(300px, 84vw);
+                height: calc(min(300px, 84vw) * 0.6667);
+            }
+            .flap {
+                border-left: calc(min(300px, 84vw) / 2) solid transparent;
+                border-right: calc(min(300px, 84vw) / 2) solid transparent;
+                border-top: calc(min(300px, 84vw) * 0.3667) solid #ff4d6d;
+            }
+            .envelope.paper-zoomed .letter-paper {
+                width: min(350px, 90vw);
+                height: min(420px, 72dvh);
+            }
+            .envelope-container-modal.paper-open .close-envelope-btn {
+                top: max(12px, calc(50% - min(210px, 36dvh) - 17px));
+                right: max(12px, calc(50% - min(175px, 45vw) - 6px));
+            }
+            .custom-gift-box {
+                width: clamp(138px, 40vw, 165px);
+                height: clamp(130px, 38vw, 155px);
+            }
+            .gift-base {
+                left: 7.2%;
+                width: 85.6%;
+                height: 69.6%;
+            }
+            .gift-lid-box {
+                top: 9.6%;
+                width: 100%;
+                height: 24.5%;
+            }
+            .ribbon-strip-lid,
+            .ribbon-strip-base {
+                width: 18.2%;
+            }
+            .gift-bow {
+                top: -22%;
+                font-size: clamp(3.3rem, 10vw, 4.2rem);
+            }
+        }
+
+        @media (max-width: 390px) {
+            .action-bar {
+                gap: 8px;
+            }
+            .icon-action-btn {
+                width: 52px;
+                height: 52px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1911,112 +2006,114 @@
         <div class="video-modal-content" id="intermediateModalContent">
             <div class="close-modal-btn" onclick="closeIntermediateModal()">&times;</div>
 
-            <div id="popup-question-view">
-                <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.2rem; margin-bottom: 12px; line-height: 1.3;">
-                    Will you be my soulmate and my girlfriend?
-                </h3>
-                <div class="proposal-img-container">
-                    <video autoplay muted loop playsinline preload="none" data-src="raw/proposal-animation.mp4" class="proposal-img"></video>
+            <div class="modal-scroll-inner" style="max-height: 82dvh; overflow-y: auto;">
+                <div id="popup-question-view">
+                    <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.2rem; margin-bottom: 12px; line-height: 1.3;">
+                        Will you be my soulmate and my girlfriend?
+                    </h3>
+                    <div class="proposal-img-container">
+                        <video autoplay muted loop playsinline preload="none" data-src="raw/proposal-animation.mp4" class="proposal-img"></video>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                        <button type="button" onclick="switchProposalView('popup-question-view', 'popup-really-view')" class="pill-glow-btn-yes">Obviously!</button>
+                        <button type="button" onclick="switchProposalView('popup-question-view', 'popup-sorry-view')" class="pill-glow-btn-no">Nice try, no way!</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
-                    <button type="button" onclick="switchProposalView('popup-question-view', 'popup-really-view')" class="pill-glow-btn-yes">Obviously!</button>
-                    <button type="button" onclick="switchProposalView('popup-question-view', 'popup-sorry-view')" class="pill-glow-btn-no">Nice try, no way!</button>
-                </div>
-            </div>
 
-            <div id="popup-really-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.3rem; margin-bottom: 12px; line-height: 1.3;">
-                    Really? 🥰
-                </h3>
-                <div class="proposal-img-container">
-                    <video autoplay muted loop playsinline preload="none" data-src="raw/hug-animation.mp4" class="proposal-img"></video>
+                <div id="popup-really-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.3rem; margin-bottom: 12px; line-height: 1.3;">
+                        Really? 🥰
+                    </h3>
+                    <div class="proposal-img-container">
+                        <video autoplay muted loop playsinline preload="none" data-src="raw/hug-animation.mp4" class="proposal-img"></video>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                        <button type="button" onclick="switchProposalView('popup-really-view', 'popup-sure-view')" class="pill-glow-btn-yes">Definitely!</button>
+                        <button type="button" onclick="switchProposalView('popup-really-view', 'popup-sorry-view')" class="pill-glow-btn-no">Probably not</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
-                    <button type="button" onclick="switchProposalView('popup-really-view', 'popup-sure-view')" class="pill-glow-btn-yes">Definitely!</button>
-                    <button type="button" onclick="switchProposalView('popup-really-view', 'popup-sorry-view')" class="pill-glow-btn-no">Probably not</button>
-                </div>
-            </div>
 
-            <div id="popup-sure-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.1rem; margin-bottom: 12px; line-height: 1.3;">
-                    🙄 Wait... are you really sure?
-                </h3>
-                <div class="proposal-img-container">
-                    <video autoplay muted loop playsinline preload="none" data-src="raw/sure-animation.mp4" class="proposal-img"></video>
+                <div id="popup-sure-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.1rem; margin-bottom: 12px; line-height: 1.3;">
+                        🙄 Wait... are you really sure?
+                    </h3>
+                    <div class="proposal-img-container">
+                        <video autoplay muted loop playsinline preload="none" data-src="raw/sure-animation.mp4" class="proposal-img"></video>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                        <button type="button" onclick="switchProposalView('popup-sure-view', 'popup-annoy-view')" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">1000% Sure!</button>
+                        <button type="button" onclick="switchProposalView('popup-sure-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 25px; font-size: 0.95rem;">Maybe?</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
-                    <button type="button" onclick="switchProposalView('popup-sure-view', 'popup-annoy-view')" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">1000% Sure!</button>
-                    <button type="button" onclick="switchProposalView('popup-sure-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 25px; font-size: 0.95rem;">Maybe?</button>
-                </div>
-            </div>
 
-            <div id="popup-annoy-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 12px; line-height: 1.3;">
-                    Warning: if you're my girlfriend, I'll annoy you every single day. 😜
-                </h3>
-                <div class="proposal-img-container">
-                    <video autoplay muted loop playsinline preload="none" data-src="raw/annoy-animation.mp4" class="proposal-img"></video>
+                <div id="popup-annoy-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 12px; line-height: 1.3;">
+                        Warning: if you're my girlfriend, I'll annoy you every single day. 😜
+                    </h3>
+                    <div class="proposal-img-container">
+                        <video autoplay muted loop playsinline preload="none" data-src="raw/annoy-animation.mp4" class="proposal-img"></video>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                        <button type="button" onclick="openRiddleOne()" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">I've been waiting for this!</button>
+                        <button type="button" onclick="switchProposalView('popup-annoy-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 20px; font-size: 0.95rem;">Hmm, let me think...</button>
+                    </div>
                 </div>
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
-                    <button type="button" onclick="openRiddleOne()" class="pill-glow-btn-yes" style="padding: 12px 20px; font-size: 0.95rem;">I've been waiting for this!</button>
-                    <button type="button" onclick="switchProposalView('popup-annoy-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 20px; font-size: 0.95rem;">Hmm, let me think...</button>
-                </div>
-            </div>
 
-            <div id="popup-riddle-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
-                    Take a test first
-                </h3>
-                <div class="riddle-poem">
-                    I have no weight, yet I can crush a heart.<br>
-                    I have no shape, yet I can shape your world.<br>
-                    You can't buy me, but you can give me away.<br>
-                    The more you give, the more you hold.<br>
-                    <strong style="color: #800f2f; font-weight: 700;">What am I?</strong>
+                <div id="popup-riddle-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
+                        Take a test first
+                    </h3>
+                    <div class="riddle-poem">
+                        I have no weight, yet I can crush a heart.<br>
+                        I have no shape, yet I can shape your world.<br>
+                        You can't buy me, but you can give me away.<br>
+                        The more you give, the more you hold.<br>
+                        <strong style="color: #800f2f; font-weight: 700;">What am I?</strong>
+                    </div>
+                    <input type="text" id="riddle-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
+                        <button type="button" onclick="checkRiddleAnswer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
+                        <button type="button" onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Give up</button>
+                    </div>
                 </div>
-                <input type="text" id="riddle-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
-                    <button type="button" onclick="checkRiddleAnswer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
-                    <button type="button" onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Give up</button>
-                </div>
-            </div>
 
-            <div id="popup-riddle2-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
-                    One last test
-                </h3>
-                <div class="riddle-poem">
-                    It takes years to build, seconds to break,<br>
-                    and forever to repair once it slips away.<br>
-                    You can feel its strength, but you can't hold it,<br>
-                    Once it is gone, it is rarely the same.<br>
-                    <strong style="color: #800f2f; font-weight: 700;">What am I?</strong>
+                <div id="popup-riddle2-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.35rem; font-weight: 700; margin-bottom: 8px;">
+                        One last test
+                    </h3>
+                    <div class="riddle-poem">
+                        It takes years to build, seconds to break,<br>
+                        and forever to repair once it slips away.<br>
+                        You can feel its strength, but you can't hold it,<br>
+                        Once it is gone, it is rarely the same.<br>
+                        <strong style="color: #800f2f; font-weight: 700;">What am I?</strong>
+                    </div>
+                    <input type="text" id="riddle2-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
+                        <button type="button" onclick="checkRiddle2Answer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
+                        <button type="button" onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Maybe later</button>
+                    </div>
                 </div>
-                <input type="text" id="riddle2-answer-input" class="riddle-input" placeholder="Write your answer..." autocomplete="off">
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 5px;">
-                    <button type="button" onclick="checkRiddle2Answer()" class="pill-glow-btn-yes" style="padding: 10px 25px; font-size: 0.95rem;">Submit</button>
-                    <button type="button" onclick="closeIntermediateModal()" class="pill-glow-btn-no" style="padding: 10px 25px; font-size: 0.95rem;">Maybe later</button>
-                </div>
-            </div>
 
-            <div id="popup-promise-view" style="display: none;">
-                <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.25rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; padding: 0 10px;">
-                    <strong style="color: #000000; font-weight: 700;">Love</strong> and <strong style="color: #000000; font-weight: 700;">Trust</strong> keep us strong. Promise to always love and trust me, so no one can ever break our relationship?
-                </h3>
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
-                    <button type="button" onclick="handlePromiseOk()" class="pill-glow-btn-yes" style="padding: 12px 25px; font-size: 0.95rem;">I Promise!</button>
-                    <button type="button" onclick="switchProposalView('popup-promise-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 25px; font-size: 0.95rem;">Maybe?</button>
+                <div id="popup-promise-view" style="display: none;">
+                    <h3 style="color: #ff2a5f; font-family: 'Poppins', sans-serif; font-style: normal; font-size: 1.25rem; font-weight: 600; line-height: 1.5; margin-bottom: 20px; padding: 0 10px;">
+                        <strong style="color: #000000; font-weight: 700;">Love</strong> and <strong style="color: #000000; font-weight: 700;">Trust</strong> keep us strong. Promise to always love and trust me, so no one can ever break our relationship?
+                    </h3>
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px;">
+                        <button type="button" onclick="handlePromiseOk()" class="pill-glow-btn-yes" style="padding: 12px 25px; font-size: 0.95rem;">I Promise!</button>
+                        <button type="button" onclick="switchProposalView('popup-promise-view', 'popup-sorry-view')" class="pill-glow-btn-no" style="padding: 12px 25px; font-size: 0.95rem;">Maybe?</button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="popup-sorry-view" style="display: none;">
-                <h3 style="color: #f87171; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 5px;">
-                    Oops! No surprise for you then 😏
-                </h3>
-                <div class="sad-emoji-container">
-                    <img data-src="raw/sad_emoji.png" alt="Sad Emoji" class="sad-emoji-img">
+                <div id="popup-sorry-view" style="display: none;">
+                    <h3 style="color: #f87171; font-family: 'Dancing Script', cursive; font-size: 2.0rem; margin-bottom: 5px;">
+                        Oops! No surprise for you then 😏
+                    </h3>
+                    <div class="sad-emoji-container">
+                        <img data-src="raw/sad_emoji.png" alt="Sad Emoji" class="sad-emoji-img">
+                    </div>
+                    <button type="button" onclick="closeIntermediateModal()" style="background: #334155; color: white; border: none; padding: 10px 35px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 10px;">Okay, fine</button>
                 </div>
-                <button type="button" onclick="closeIntermediateModal()" style="background: #334155; color: white; border: none; padding: 10px 35px; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 10px;">Okay, fine</button>
             </div>
         </div>
     </div>
@@ -2066,6 +2163,46 @@
 
         const CONFETTI_COLORS = ["#ff2a5f", "#ff758f", "#ffd700", "#4ade80", "#38bdf8", "#c084fc"];
 
+        function fitMobileLayoutToViewport() {
+            const root = document.documentElement;
+            const vw = window.innerWidth || root.clientWidth || 390;
+
+            // Keep PC untouched
+            if (vw > 768) {
+                root.style.setProperty("--mobile-scale", "1");
+                return;
+            }
+
+            const vh = window.innerHeight || root.clientHeight || 844;
+            root.style.setProperty("--mobile-scale", "1");
+
+            const contentBox = document.querySelector(".content-box");
+            const lockCard = document.querySelector(".lock-card");
+            let neededScale = 1;
+
+            if (contentBox) {
+                const boxRect = contentBox.getBoundingClientRect();
+                const availW = vw - 16;
+                const availH = vh - 20;
+                if (boxRect.width > 0 && boxRect.height > 0) {
+                    neededScale = Math.min(neededScale, availW / boxRect.width, availH / boxRect.height);
+                }
+            }
+
+            if (lockCard && lockScreen && lockScreen.style.display !== "none") {
+                const lockRect = lockCard.getBoundingClientRect();
+                const availW = vw - 24;
+                const availH = vh - 24;
+                if (lockRect.width > 0 && lockRect.height > 0) {
+                    const lockScale = Math.min(1, availW / lockRect.width, availH / lockRect.height);
+                    neededScale = Math.min(neededScale, lockScale);
+                }
+            }
+
+            const finalScale = Math.max(0.68, Math.min(1, neededScale));
+            root.style.setProperty("--mobile-scale", finalScale.toFixed(3));
+        }
+
         function ensureMediaSrc(mediaEl, srcPath) {
             if (mediaEl && mediaEl.getAttribute("src") !== srcPath) {
                 mediaEl.src = srcPath;
@@ -2108,6 +2245,13 @@
             if (alreadyUnlocked) {
                 preloadProposalVideosOnce();
             }
+            fitMobileLayoutToViewport();
+            requestAnimationFrame(fitMobileLayoutToViewport);
+        });
+
+        window.addEventListener("resize", fitMobileLayoutToViewport);
+        window.addEventListener("orientationchange", function() {
+            setTimeout(fitMobileLayoutToViewport, 120);
         });
 
         function startSuspenseAudio() {
@@ -2207,6 +2351,7 @@
                 setTimeout(() => {
                     lockScreen.classList.add("fade-out");
                     triggerHeartsBlast();
+                    setTimeout(fitMobileLayoutToViewport, 80);
                 }, 2000);
             } else {
                 rejectInput(emojiInput);
@@ -2214,6 +2359,8 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+            fitMobileLayoutToViewport();
+
             const startDate = new Date("2025-07-31T18:30:00");
             let oldSeconds = -1;
 
