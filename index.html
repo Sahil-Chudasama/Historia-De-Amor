@@ -1400,6 +1400,7 @@
         }
 
         .close-envelope-btn {
+            display: none;
             position: absolute;
             top: 100px;
             right: 0;
@@ -1413,7 +1414,6 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1010;
-            display: flex;
             justify-content: center;
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
@@ -1557,6 +1557,7 @@
         }
 
         .envelope-container-modal.paper-open .close-envelope-btn {
+            display: flex;
             position: fixed;
             top: calc(50% - 227px);
             right: calc(50% - 155px);
@@ -1761,6 +1762,7 @@
             }
 
             .envelope-container-modal.paper-open .close-envelope-btn {
+                display: flex;
                 top: max(12px, calc(50% - min(210px, 36dvh) - 17px));
                 right: max(12px, calc(50% - min(175px, 45vw) - 6px));
             }
